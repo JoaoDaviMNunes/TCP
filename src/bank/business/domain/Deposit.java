@@ -9,9 +9,10 @@ public class Deposit extends Transaction {
 	private long envelope;
 
 	public Deposit(OperationLocation location, CurrentAccount account,
-			long envelope, double amount) {
-		super(location, account, amount);
+			long envelope, double amount,String status) {
+		super(location, account, amount,status);
 		this.envelope = envelope;
+		
 	}
 
 	/**

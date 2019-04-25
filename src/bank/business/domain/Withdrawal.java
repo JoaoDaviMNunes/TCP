@@ -8,7 +8,7 @@ public class Withdrawal extends Transaction {
 
 	public Withdrawal(OperationLocation location, CurrentAccount account,
 			double amount) {
-		super(location, account, amount);
+		super(location, account, amount,"FINALIZADO"); //por enquanto deixar como literal
 	}
 
 }

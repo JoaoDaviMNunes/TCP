@@ -25,10 +25,19 @@ public class DepositCommand extends Command {
 		Long accountNumber = bankInterface.readCurrentAccountNumber();
 		Long envelope = UIUtils.INSTANCE.readLong("envelope");
 		Double amount = UIUtils.INSTANCE.readDouble("amount");
-
+		
+		System.out.println("Voce esta no " +bankInterface
+				.getOperationLocation().getClass().getSimpleName());
+		
+		if(bankInterface
+				.getOperationLocation().getClass().getSimpleName() == "ATM") {
+			
+			
+		}
+		
 		Deposit deposit = accountOperationService.deposit(bankInterface
 				.getOperationLocation().getNumber(), branch, accountNumber,
-				envelope, amount);
+				envelope, amount,"PENDENTE");
 
 		System.out.println(getTextManager().getText(
 				"message.operation.succesfull"));

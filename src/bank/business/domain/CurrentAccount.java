@@ -35,10 +35,10 @@ public class CurrentAccount implements Credentials {
 	}
 
 	public Deposit deposit(OperationLocation location, long envelope,
-			double amount) throws BusinessException {
+			double amount,String status) throws BusinessException {
 		depositAmount(amount);
 
-		Deposit deposit = new Deposit(location, this, envelope, amount);
+		Deposit deposit = new Deposit(location, this, envelope, amount,status);
 		this.deposits.add(deposit);
 
 		return deposit;

@@ -10,7 +10,7 @@ public class Transfer extends Transaction {
 
 	public Transfer(OperationLocation location, CurrentAccount account,
 			CurrentAccount destinationAccount, double amount) {
-		super(location, account, amount);
+		super(location, account, amount,"FINALIZADO");
 		this.destinationAccount = destinationAccount;
 	}
 

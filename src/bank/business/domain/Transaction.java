@@ -12,7 +12,17 @@ public abstract class Transaction {
 	private double amount;
 	private Date date;
 	private OperationLocation location;
+	private String status = "INDEFINIDO"; //Pendente, cancelado, finalizado,indefinido
 
+	protected Transaction(OperationLocation location, CurrentAccount account,
+			double amount,String status) {
+		this.location = location;
+		this.date = new Date(System.currentTimeMillis());
+		this.account = account;
+		this.amount = amount;
+		this.status = status;
+	}
+	
 	protected Transaction(OperationLocation location, CurrentAccount account,
 			double amount) {
 		this.location = location;
@@ -41,6 +51,11 @@ public abstract class Transaction {
 	public Date getDate() {
 		return date;
 	}
+	
+	//retorna o status atual da transação
+	public String getStatus() {
+		return status;
+	}
 
 	/**
 	 * @return the location
@@ -57,6 +72,11 @@ public abstract class Transaction {
 	 */
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	
+	//altera o status atual da transação. TODO: Validar status
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

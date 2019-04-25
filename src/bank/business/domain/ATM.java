@@ -9,5 +9,6 @@ public class ATM extends OperationLocation {
 	public ATM(long number) {
 		super(number);
 	}
+	
 
 }

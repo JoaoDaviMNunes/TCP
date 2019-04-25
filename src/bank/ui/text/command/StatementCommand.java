@@ -80,7 +80,8 @@ public class StatementCommand extends Command {
 		sb.append(getTextManager().getText("location")).append("\t");
 		sb.append(getTextManager().getText("operation.type")).append("\t");
 		sb.append(getTextManager().getText("details")).append("\t");
-		sb.append(getTextManager().getText("amount")).append("\n");
+		sb.append(getTextManager().getText("amount")).append("\t\t\t\t");
+		sb.append(getTextManager().getText("status")).append("\n");
 		sb.append("---------------------------------------------------------------------------------\n");
 		for (Transaction transaction : transactions) {
 			sb.append(UIUtils.INSTANCE.formatDateTime(transaction.getDate()))
@@ -117,6 +118,9 @@ public class StatementCommand extends Command {
 				sb.append("\t\t\t");
 				sb.append("- ").append(transaction.getAmount());
 			}
+			sb.append("\t");
+			sb.append(transaction.getStatus());
+			
 			sb.append("\n");
 		}
 		System.out.println(sb);

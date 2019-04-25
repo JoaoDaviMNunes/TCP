@@ -99,7 +99,7 @@ public class DepositAction extends AccountAbstractAction {
 					.getOperationLocation().getNumber(), ((Number) branch
 					.getValue()).longValue(), ((Number) accountNumber
 					.getValue()).longValue(), ((Number) envelope.getValue())
-					.intValue(), ((Number) amount.getValue()).doubleValue());
+					.intValue(), ((Number) amount.getValue()).doubleValue(),"PENDENTE");
 			StringBuffer sb = new StringBuffer();
 			sb.append(textManager.getText("message.operation.succesfull"))
 					.append("\n");
