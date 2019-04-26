@@ -30,19 +30,29 @@ public class DepositCommand extends Command {
 				.getOperationLocation().getClass().getSimpleName());
 		
 		if(bankInterface
-				.getOperationLocation().getClass().getSimpleName() == "ATM") {
-			
-			
-		}
+			.getOperationLocation().getClass().getSimpleName().equals("ATM")) {
 		
+			System.out.println("Voce esta no " +bankInterface.getOperationLocation().getClass().getSimpleName());
+				
+		}
+		if(amount<= 100) {
 		Deposit deposit = accountOperationService.deposit(bankInterface
 				.getOperationLocation().getNumber(), branch, accountNumber,
 				envelope, amount,"PENDENTE");
-
+		
 		System.out.println(getTextManager().getText(
 				"message.operation.succesfull"));
 		System.out.println(getTextManager().getText("deposit") + ": "
 				+ deposit.getAmount());
+		}
+		else if (amount > 100) {
+			amount = (double) 0;
+			Deposit deposit = accountOperationService.deposit(bankInterface
+					.getOperationLocation().getNumber(), branch, accountNumber,
+					envelope, amount,"PENDENTE");
+			System.out.println("Status: " + deposit.getStatus());
+			
+		}
 	}
 
 }
