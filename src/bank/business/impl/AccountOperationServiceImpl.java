@@ -50,6 +50,8 @@ public class AccountOperationServiceImpl implements AccountOperationService {
 			throws BusinessException {
 		return readCurrentAccount(branch, accountNumber).getBalance();
 	}
+	
+	
 
 	private OperationLocation getOperationLocation(long operationLocationNumber)
 			throws BusinessException {
@@ -129,7 +131,7 @@ public class AccountOperationServiceImpl implements AccountOperationService {
 		return currentAccount;
 	}
 
-	private CurrentAccount readCurrentAccount(long branch, long accountNumber)
+	public CurrentAccount readCurrentAccount(long branch, long accountNumber)
 			throws BusinessException {
 		CurrentAccountId id = new CurrentAccountId(new Branch(branch),
 				accountNumber);

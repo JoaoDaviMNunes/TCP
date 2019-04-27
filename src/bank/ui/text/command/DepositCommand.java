@@ -29,6 +29,13 @@ public class DepositCommand extends Command {
 		System.out.println("Voce esta no " +bankInterface
 				.getOperationLocation().getClass().getSimpleName());
 		
+		Deposit deposit = bankInterface.getOperationLocation().initializeDeposit(accountOperationService, bankInterface
+				.getOperationLocation().getNumber(), branch, accountNumber, envelope, amount);
+		
+		System.out.println("Status: " + deposit.getStatus());
+		System.out.println(getTextManager().getText("deposit") + ": "
+				+ deposit.getAmount());
+		/*
 		if(bankInterface
 			.getOperationLocation().getClass().getSimpleName().equals("ATM")) {
 		
@@ -52,7 +59,7 @@ public class DepositCommand extends Command {
 					envelope, amount,"PENDENTE");
 			System.out.println("Status: " + deposit.getStatus());
 			
-		}
+		}*/
 	}
 
 }

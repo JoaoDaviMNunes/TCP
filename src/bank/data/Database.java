@@ -124,16 +124,20 @@ public class Database {
 			Random r = new Random(System.currentTimeMillis());
 			Calendar cal = Calendar.getInstance();
 			for (int i = 0; i < 8; i++) {
+				double deposit_amount1 = r.nextDouble() * 150;
+				double deposit_amount2 = r.nextDouble() * 150;
 				changeDate(
-						ca1.deposit(b1, r.nextInt(10000), r.nextDouble() * 150,"FINALIZADA"),
+						ca1.deposit(b1, r.nextInt(10000), deposit_amount1 * 150,"FINALIZADO"),
 						r, cal);
+				ca1.depositAmount(deposit_amount1);
 				changeDate(ca1.withdrawal(atm1, r.nextDouble() * 100), r, cal);
 				changeDate(ca1.transfer(atm2, ca2, r.nextDouble() * 100), r,
 						cal);
 
 				changeDate(
-						ca2.deposit(b2, r.nextInt(10000), r.nextDouble() * 150,"FINALIZADA"),
+						ca2.deposit(b2, r.nextInt(10000), deposit_amount2 * 150,"FINALIZADO"),
 						r, cal);
+				ca2.depositAmount(deposit_amount2);
 				changeDate(ca2.withdrawal(atm2, r.nextDouble() * 100), r, cal);
 				changeDate(ca2.transfer(atm3, ca1, r.nextDouble() * 100), r,
 						cal);

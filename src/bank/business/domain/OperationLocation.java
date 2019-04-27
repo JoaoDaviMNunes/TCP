@@ -1,5 +1,8 @@
 package bank.business.domain;
 
+import bank.business.AccountOperationService;
+import bank.business.BusinessException;
+
 /**
  * @author Ingrid Nunes
  * 
@@ -45,5 +48,9 @@ public abstract class OperationLocation {
 	public String toString() {
 		return getClass().getSimpleName() + " " + number;
 	}
+	
+	abstract public Deposit initializeDeposit(AccountOperationService accountOperationService,
+			long operationLocation, long branch,
+			long accountNumber, long envelope, double amount) throws BusinessException;
 
 }

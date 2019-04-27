@@ -24,6 +24,9 @@ public interface AccountOperationService {
 
 	public double getBalance(long branch, long accountNumber)
 			throws BusinessException;
+	
+	public CurrentAccount readCurrentAccount(long branch, long accountNumber)
+			throws BusinessException;
 
 	public List<Transaction> getStatementByDate(long branch,
 			long accountNumber, Date begin, Date end) throws BusinessException;
