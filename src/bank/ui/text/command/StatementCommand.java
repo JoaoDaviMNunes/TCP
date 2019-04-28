@@ -73,7 +73,7 @@ public class StatementCommand extends Command {
 		}
 	}
 
-	private void printStatement(CurrentAccountId caId,
+	protected void printStatement(CurrentAccountId caId,
 			List<Transaction> transactions) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(getTextManager().getText("date")).append("\t\t\t");

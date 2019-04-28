@@ -27,6 +27,9 @@ public interface AccountOperationService {
 	
 	public CurrentAccount readCurrentAccount(long branch, long accountNumber)
 			throws BusinessException;
+	
+	public List<Transaction> getDepositByStatus(long branch,
+			long accountNumber,String status)  throws BusinessException;
 
 	public List<Transaction> getStatementByDate(long branch,
 			long accountNumber, Date begin, Date end) throws BusinessException;

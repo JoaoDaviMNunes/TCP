@@ -84,6 +84,25 @@ public class AccountOperationServiceImpl implements AccountOperationService {
 
 		return selectedTransactions;
 	}
+	
+	
+	private List<Transaction> getDepositByStatus(CurrentAccount currentAccount, String status)  throws BusinessException{
+		List<Transaction> selectedDeposits = new LinkedList<>();
+		
+		for (Transaction transaction : currentAccount.getTransactions()) {
+			if (transaction.getStatus().equals(status))
+				selectedDeposits.add(transaction);
+			
+		}
+		
+		return selectedDeposits;
+		
+	}
+	
+	public List<Transaction> getDepositByStatus(long branch,
+			long accountNumber,String status)  throws BusinessException{
+		return getDepositByStatus(readCurrentAccount(branch, accountNumber),status);
+	}
 
 	@Override
 	public List<Transaction> getStatementByDate(long branch,

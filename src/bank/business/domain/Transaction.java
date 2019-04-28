@@ -7,6 +7,8 @@ import java.util.Date;
  * 
  */
 public abstract class Transaction {
+	
+	public static String pending_status = "PENDENTE";
 
 	private CurrentAccount account;
 	private double amount;
