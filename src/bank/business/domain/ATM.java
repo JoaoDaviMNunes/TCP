@@ -17,7 +17,7 @@ public class ATM extends OperationLocation {
 			long accountNumber, long envelope, double amount) throws BusinessException{
 		
 		
-		BigDecimal verification_amount = BigDecimal.valueOf(100.00);
+		//BigDecimal verification_amount = BigDecimal.valueOf(100.00);
 		BigDecimal deposit_amount = BigDecimal.valueOf(amount);
 		
 		Deposit deposit = accountOperationService.deposit(operationLocation,branch,accountNumber,envelope,amount,"PENDENTE");
@@ -27,7 +27,7 @@ public class ATM extends OperationLocation {
 		//BigDecimal dá maior segurança na comparação de valores fracionários comparado
 		//com uma comparação ==.
 		//compareTo retorna -1 se menor, 0 se igual e 1 se maior.
-		if( deposit_amount.compareTo(verification_amount) <= 0) {//menor ou igual 
+		if( deposit_amount.compareTo(Deposit.verification_amount) <= 0) {//menor ou igual 
 			currentAccount.depositAmount(amount);
 			
 		}

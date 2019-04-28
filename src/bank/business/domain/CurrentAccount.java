@@ -54,6 +54,17 @@ public class CurrentAccount implements Credentials {
 		this.balance += amount;
 	}
 	
+	public void updateDeposit(Deposit deposit, String newStatus, double balanceChange) {
+		int deposit_update_index = getDeposits().indexOf(deposit);
+		
+		this.balance += balanceChange;
+		deposit.setStatus(newStatus);
+		
+		getDeposits().set(deposit_update_index, deposit);
+		
+		
+	}
+	
 	
 
 	/**

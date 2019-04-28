@@ -2,15 +2,22 @@ package bank.ui.text.command;
 
 import bank.business.AccountOperationService;
 import bank.business.domain.Branch;
+import bank.business.domain.CurrentAccount;
 import bank.business.domain.CurrentAccountId;
 import bank.business.domain.Transaction;
+import bank.business.domain.Deposit;
 import bank.ui.text.BankTextInterface;
-import java.util.Calendar;
+import bank.ui.text.UIUtils;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PendingDepositsCommand extends Command {
 
 	private final AccountOperationService accountOperationService;
+	
 
 	public PendingDepositsCommand(BankTextInterface bankInterface,
 			AccountOperationService accountOperationService) {
@@ -23,11 +30,45 @@ public class PendingDepositsCommand extends Command {
 		Long accountNumber = bankInterface.readCurrentAccountNumber();
 		
 		List<Transaction> transactions = accountOperationService.getDepositByStatus(branch, accountNumber, Transaction.pending_status);
-		
 		new StatementCommand(bankInterface, accountOperationService).printStatement(new CurrentAccountId(new Branch(branch), accountNumber),
 				transactions);
 		
+		
+		
+		
+		String formatted_message = getTextManager().getText("message.select.deposit", new String[] {"1", Integer.toString(transactions.size())} );
+		int item = UIUtils.INSTANCE.readInteger(formatted_message,1,transactions.size());
+		
+		String choice = UIUtils.INSTANCE.readString("message.accept.refuse.deposit");
+		
+		Deposit selected_deposit = (Deposit) transactions.get(item-1);
+		
+		
+		Map<String,String> status_map = new HashMap<>();
+		status_map.put("A", Transaction.accepted_status);
+		status_map.put("0", Transaction.accepted_status);
+		status_map.put("R", Transaction.refused_status);
+		status_map.put("1", Transaction.refused_status);
+		
+		Map<String,Double> balance_variation = new HashMap<>();
+		balance_variation.put(Transaction.accepted_status, selected_deposit.getAmount());
+		balance_variation.put(Transaction.refused_status, AmountToDebit(selected_deposit.getAmount()));
+		
+		System.out.println(item);
+		System.out.println(choice);
+		System.out.println(status_map.get(choice));
+		System.out.println(balance_variation.get(status_map.get(choice)));		
+		
+		CurrentAccount currentAccount = accountOperationService.readCurrentAccount(branch, accountNumber);
+		currentAccount.updateDeposit(selected_deposit, status_map.get(choice), balance_variation.get(status_map.get(choice)));
+		
 
+	}
+	
+	private Double AmountToDebit(Double amount) {
+		BigDecimal debit_amount = BigDecimal.valueOf(amount);
+		return (debit_amount.compareTo(Deposit.verification_amount) <= 0) ? (-1.0 * amount) : 0.0;
+		
 	}
 
 }
