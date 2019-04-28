@@ -45,10 +45,8 @@ public class Branch extends OperationLocation {
 	
 	public Deposit initializeDeposit(AccountOperationService accountOperationService,long operationLocation, long branch,
 			long accountNumber, long envelope, double amount) throws BusinessException{
-		Deposit deposit = accountOperationService.deposit(operationLocation,branch,accountNumber,envelope,amount,"FINALIZADO");
-		CurrentAccount currentAccount = accountOperationService.readCurrentAccount(branch,accountNumber);
-		currentAccount.depositAmount(amount);
-		return deposit;
+	
+		return accountOperationService.deposit(operationLocation,branch,accountNumber,envelope,amount,Transaction.accepted_status);
 	}
 
 	@Override

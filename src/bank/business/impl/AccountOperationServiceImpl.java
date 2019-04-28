@@ -42,7 +42,34 @@ public class AccountOperationServiceImpl implements AccountOperationService {
 				accountNumber);
 		Deposit deposit = currentAccount.deposit(
 				getOperationLocation(operationLocation), envelope, amount,status);
+		
+		currentAccount.depositAmount(amount);
+		
 		return deposit;
+	}
+	
+	public Deposit deposit(long operationLocation, long branch,
+			long accountNumber, long envelope, double amount,String status,boolean creditEnable)
+			throws BusinessException {
+		CurrentAccount currentAccount = readCurrentAccount(branch,
+				accountNumber);
+		Deposit deposit = currentAccount.deposit(
+				getOperationLocation(operationLocation), envelope, amount,status);
+		
+		if (creditEnable) {
+			currentAccount.depositAmount(amount);
+		}
+		
+		
+		return deposit;
+	}
+	
+	public Deposit updateDeposits(long branch, long accountNumber,Deposit deposit, String newStatus, double balanceChange) throws BusinessException{
+		CurrentAccount currentAccount = readCurrentAccount(branch,
+				accountNumber);
+		
+		return currentAccount.updateDeposit(deposit, newStatus, balanceChange);
+		
 	}
 
 	@Override
@@ -150,7 +177,7 @@ public class AccountOperationServiceImpl implements AccountOperationService {
 		return currentAccount;
 	}
 
-	public CurrentAccount readCurrentAccount(long branch, long accountNumber)
+	private CurrentAccount readCurrentAccount(long branch, long accountNumber)
 			throws BusinessException {
 		CurrentAccountId id = new CurrentAccountId(new Branch(branch),
 				accountNumber);
