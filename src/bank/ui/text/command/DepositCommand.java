@@ -26,8 +26,6 @@ public class DepositCommand extends Command {
 		Long envelope = UIUtils.INSTANCE.readLong("envelope");
 		Double amount = UIUtils.INSTANCE.readDouble("amount");
 		
-		System.out.println("Voce esta no " +bankInterface
-				.getOperationLocation().getClass().getSimpleName());
 		
 		Deposit deposit = bankInterface.getOperationLocation().initializeDeposit(accountOperationService, bankInterface
 				.getOperationLocation().getNumber(), branch, accountNumber, envelope, amount);

@@ -11,11 +11,16 @@ import bank.ui.text.UIUtils;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 public class PendingDepositsCommand extends Command {
 
 	private final AccountOperationService accountOperationService;
+	
+	private final List<String> acceptList = new ArrayList<String>(Arrays.asList("A","0","ACEITAR","CONFIRMAR","FINALIZAR"));
+	private final List<String> rejectList = new ArrayList<String>(Arrays.asList("R","1","REJEITAR","CANCELAR","RECUSAR"));
 	
 
 	public PendingDepositsCommand(BankTextInterface bankInterface,
@@ -38,7 +43,10 @@ public class PendingDepositsCommand extends Command {
 		String formatted_message = getTextManager().getText("message.select.deposit", new String[] {"1", Integer.toString(transactions.size())} );
 		int item = UIUtils.INSTANCE.readInteger(formatted_message,1,transactions.size());
 		
-		String choice = UIUtils.INSTANCE.readString("message.accept.refuse.deposit");
+		System.out.println(acceptList + " : " + "Aceitar");
+		System.out.println(rejectList + " : " + "Rejeitar");
+		
+		String choice = UIUtils.INSTANCE.readString("message.accept.refuse.deposit").toUpperCase();
 		
 		Deposit selected_deposit = (Deposit) transactions.get(item-1);
 		
@@ -46,35 +54,43 @@ public class PendingDepositsCommand extends Command {
 		Map<String,String> status_map = status_map_fill();
 		Map<String,Double> balance_variation =  balance_map_fill(selected_deposit);
 		
+		/*
 		System.out.println(item);
 		System.out.println(choice);
 		System.out.println(status_map.get(choice));
-		System.out.println(balance_variation.get(status_map.get(choice)));		
+		System.out.println(balance_variation.get(status_map.get(choice)));	*/	
 		
 		Deposit updated_deposit = accountOperationService.updateDeposits(branch, accountNumber, selected_deposit, status_map.get(choice), balance_variation.get(status_map.get(choice)));
 		
 		System.out.println("Status: " + updated_deposit.getStatus());
 		System.out.println(getTextManager().getText("deposit") + ": "
 				+ updated_deposit.getAmount());
-		//CurrentAccount currentAccount = accountOperationService.readCurrentAccount(branch, accountNumber);
-		//currentAccount.updateDeposit(selected_deposit, status_map.get(choice), balance_variation.get(status_map.get(choice)));
 		
 
 	}
 	
 	private Double AmountToDebit(Double amount) {
-		BigDecimal debit_amount = BigDecimal.valueOf(amount);
-		return (debit_amount.compareTo(Deposit.verification_amount) <= 0) ? (-1.0 * amount) : 0.0;
+		BigDecimal DebitAmount = BigDecimal.valueOf(amount);
+		return (DebitAmount.compareTo(Deposit.verification_amount) <= 0) ? (-1.0 * amount) : 0.0;
+		
+	}
+	
+	private Double AmountToCredit(Double amount) {
+		BigDecimal CreditAmount = BigDecimal.valueOf(amount);
+		return (CreditAmount.compareTo(Deposit.verification_amount) <= 0) ? (0.0) : amount;
 		
 	}
 	
 	private Map<String,String> status_map_fill(){
 		Map<String,String> status_map = new HashMap<>();
 		
-		status_map.put("A", Transaction.accepted_status);
-		status_map.put("0", Transaction.accepted_status);
-		status_map.put("R", Transaction.refused_status);
-		status_map.put("1", Transaction.refused_status);
+		for(String key : acceptList) {
+			status_map.put(key, Transaction.accepted_status);
+		}
+		
+		for(String key : rejectList) {
+			status_map.put(key, Transaction.refused_status);
+		}
 		
 		return status_map;
 		
@@ -83,7 +99,7 @@ public class PendingDepositsCommand extends Command {
 	
 	private Map<String,Double> balance_map_fill(Deposit selected_deposit) {
 		Map<String,Double> balance_variation = new HashMap<>();
-		balance_variation.put(Transaction.accepted_status, selected_deposit.getAmount());
+		balance_variation.put(Transaction.accepted_status, AmountToCredit(selected_deposit.getAmount()));
 		balance_variation.put(Transaction.refused_status, AmountToDebit(selected_deposit.getAmount()));
 		
 		return balance_variation;
