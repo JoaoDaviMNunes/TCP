@@ -35,9 +35,13 @@ public class CurrentAccount implements Credentials {
 	}
 
 	public Deposit deposit(OperationLocation location, long envelope,
-			double amount,String status) throws BusinessException {
+			double amount,String status,boolean creditEnable) throws BusinessException {
 		if (!isValidAmount(amount)) {
 			throw new BusinessException("exception.invalid.amount");
+		}
+		
+		if (creditEnable) {
+			this.balance += amount;
 		}
 
 		Deposit deposit = new Deposit(location, this, envelope, amount,status);
@@ -46,7 +50,7 @@ public class CurrentAccount implements Credentials {
 		return deposit;
 	}
 
-	public void depositAmount(double amount) throws BusinessException {
+	private void depositAmount(double amount) throws BusinessException {
 		if (!isValidAmount(amount)) {
 			throw new BusinessException("exception.invalid.amount");
 		}

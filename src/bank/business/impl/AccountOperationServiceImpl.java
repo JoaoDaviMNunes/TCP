@@ -41,9 +41,8 @@ public class AccountOperationServiceImpl implements AccountOperationService {
 		CurrentAccount currentAccount = readCurrentAccount(branch,
 				accountNumber);
 		Deposit deposit = currentAccount.deposit(
-				getOperationLocation(operationLocation), envelope, amount,status);
+				getOperationLocation(operationLocation), envelope, amount,status,true);
 		
-		currentAccount.depositAmount(amount);
 		
 		return deposit;
 	}
@@ -54,11 +53,9 @@ public class AccountOperationServiceImpl implements AccountOperationService {
 		CurrentAccount currentAccount = readCurrentAccount(branch,
 				accountNumber);
 		Deposit deposit = currentAccount.deposit(
-				getOperationLocation(operationLocation), envelope, amount,status);
+				getOperationLocation(operationLocation), envelope, amount,status,creditEnable);
 		
-		if (creditEnable) {
-			currentAccount.depositAmount(amount);
-		}
+		
 		
 		
 		return deposit;

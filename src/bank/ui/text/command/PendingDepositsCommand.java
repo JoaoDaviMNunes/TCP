@@ -54,11 +54,7 @@ public class PendingDepositsCommand extends Command {
 		Map<String,String> status_map = status_map_fill();
 		Map<String,Double> balance_variation =  balance_map_fill(selected_deposit);
 		
-		/*
-		System.out.println(item);
-		System.out.println(choice);
-		System.out.println(status_map.get(choice));
-		System.out.println(balance_variation.get(status_map.get(choice)));	*/	
+	
 		
 		Deposit updated_deposit = accountOperationService.updateDeposits(branch, accountNumber, selected_deposit, status_map.get(choice), balance_variation.get(status_map.get(choice)));
 		
@@ -70,6 +66,8 @@ public class PendingDepositsCommand extends Command {
 	}
 	
 	private Double AmountToDebit(Double amount) {
+		//BigDecimal valueOf recebe um valor e retorna um novo objeto do tipo Bigdecimal com o valor convertido
+		//CompareTo retorna -1 se o valor for menor, 0 se igual e 1 se maior. <= significa, então, menor ou igual ao valor de comparação
 		BigDecimal DebitAmount = BigDecimal.valueOf(amount);
 		return (DebitAmount.compareTo(Deposit.verification_amount) <= 0) ? (-1.0 * amount) : 0.0;
 		
