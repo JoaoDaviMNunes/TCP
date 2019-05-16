@@ -3,6 +3,9 @@ package bank.business.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import bank.business.AccountOperationService;
+import bank.business.BusinessException;
+
 /**
  * @author Ingrid Nunes
  * 
@@ -39,10 +42,17 @@ public class Branch extends OperationLocation {
 	public String getName() {
 		return name;
 	}
+	
+	public Deposit initializeDeposit(AccountOperationService accountOperationService,long operationLocation, long branch,
+			long accountNumber, long envelope, double amount) throws BusinessException{
+	
+		return accountOperationService.deposit(operationLocation,branch,accountNumber,envelope,amount,Transaction.accepted_status);
+	}
 
 	@Override
 	public String toString() {
 		return name + " (" + getNumber() + ")";
 	}
+	
 
 }

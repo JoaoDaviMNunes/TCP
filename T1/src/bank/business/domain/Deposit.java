@@ -1,5 +1,7 @@
 package bank.business.domain;
 
+import java.math.BigDecimal;
+
 /**
  * @author Ingrid Nunes
  * 
@@ -7,6 +9,8 @@ package bank.business.domain;
 public class Deposit extends Transaction {
 
 	private long envelope;
+	
+	public static final BigDecimal verification_amount = BigDecimal.valueOf(100.00);
 
 	public Deposit(OperationLocation location, CurrentAccount account,
 			long envelope, double amount,String status) {

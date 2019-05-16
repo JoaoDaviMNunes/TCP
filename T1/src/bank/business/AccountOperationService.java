@@ -21,9 +21,20 @@ public interface AccountOperationService {
 	public Deposit deposit(long operationLocation, long branch,
 			long accountNumber, long envelope, double amount,String status)
 			throws BusinessException;
+	
+	public Deposit deposit(long operationLocation, long branch,
+			long accountNumber, long envelope, double amount,String status,boolean creditEnable)
+			throws BusinessException;
 
 	public double getBalance(long branch, long accountNumber)
 			throws BusinessException;
+	
+	public Deposit updateDeposits(long branch, long accountNumber,Deposit deposit, String newStatus, double balanceChange) throws BusinessException;
+	
+
+	
+	public List<Transaction> getDepositByStatus(long branch,
+			long accountNumber,String status)  throws BusinessException;
 
 	public List<Transaction> getStatementByDate(long branch,
 			long accountNumber, Date begin, Date end) throws BusinessException;

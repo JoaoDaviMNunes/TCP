@@ -7,6 +7,10 @@ import java.util.Date;
  * 
  */
 public abstract class Transaction {
+	
+	public static final String pending_status = "PENDENTE";
+	public static final String accepted_status = "FINALIZADO";
+	public static final String refused_status = "CANCELADO";
 
 	private CurrentAccount account;
 	private double amount;

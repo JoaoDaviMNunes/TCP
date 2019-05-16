@@ -35,8 +35,14 @@ public class CurrentAccount implements Credentials {
 	}
 
 	public Deposit deposit(OperationLocation location, long envelope,
-			double amount,String status) throws BusinessException {
-		depositAmount(amount);
+			double amount,String status,boolean creditEnable) throws BusinessException {
+		if (!isValidAmount(amount)) {
+			throw new BusinessException("exception.invalid.amount");
+		}
+		
+		if (creditEnable) {
+			this.balance += amount;
+		}
 
 		Deposit deposit = new Deposit(location, this, envelope, amount,status);
 		this.deposits.add(deposit);
@@ -51,6 +57,21 @@ public class CurrentAccount implements Credentials {
 
 		this.balance += amount;
 	}
+	
+	public Deposit updateDeposit(Deposit deposit, String newStatus, double balanceChange) {
+		int deposit_update_index = getDeposits().indexOf(deposit);
+		
+		this.balance += balanceChange;
+		deposit.setStatus(newStatus);
+		
+		getDeposits().set(deposit_update_index, deposit);
+		
+		return deposit;
+		
+		
+	}
+	
+	
 
 	/**
 	 * @return the balance

@@ -41,8 +41,32 @@ public class AccountOperationServiceImpl implements AccountOperationService {
 		CurrentAccount currentAccount = readCurrentAccount(branch,
 				accountNumber);
 		Deposit deposit = currentAccount.deposit(
-				getOperationLocation(operationLocation), envelope, amount,status);
+				getOperationLocation(operationLocation), envelope, amount,status,true);
+		
+		
 		return deposit;
+	}
+	
+	public Deposit deposit(long operationLocation, long branch,
+			long accountNumber, long envelope, double amount,String status,boolean creditEnable)
+			throws BusinessException {
+		CurrentAccount currentAccount = readCurrentAccount(branch,
+				accountNumber);
+		Deposit deposit = currentAccount.deposit(
+				getOperationLocation(operationLocation), envelope, amount,status,creditEnable);
+		
+		
+		
+		
+		return deposit;
+	}
+	
+	public Deposit updateDeposits(long branch, long accountNumber,Deposit deposit, String newStatus, double balanceChange) throws BusinessException{
+		CurrentAccount currentAccount = readCurrentAccount(branch,
+				accountNumber);
+		
+		return currentAccount.updateDeposit(deposit, newStatus, balanceChange);
+		
 	}
 
 	@Override
@@ -50,6 +74,8 @@ public class AccountOperationServiceImpl implements AccountOperationService {
 			throws BusinessException {
 		return readCurrentAccount(branch, accountNumber).getBalance();
 	}
+	
+	
 
 	private OperationLocation getOperationLocation(long operationLocationNumber)
 			throws BusinessException {
@@ -81,6 +107,25 @@ public class AccountOperationServiceImpl implements AccountOperationService {
 		});
 
 		return selectedTransactions;
+	}
+	
+	
+	private List<Transaction> getDepositByStatus(CurrentAccount currentAccount, String status)  throws BusinessException{
+		List<Transaction> selectedDeposits = new LinkedList<>();
+		
+		for (Transaction transaction : currentAccount.getTransactions()) {
+			if (transaction.getStatus().equals(status))
+				selectedDeposits.add(transaction);
+			
+		}
+		
+		return selectedDeposits;
+		
+	}
+	
+	public List<Transaction> getDepositByStatus(long branch,
+			long accountNumber,String status)  throws BusinessException{
+		return getDepositByStatus(readCurrentAccount(branch, accountNumber),status);
 	}
 
 	@Override

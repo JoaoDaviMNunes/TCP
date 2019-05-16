@@ -3,6 +3,8 @@
  */
 package bank.data;
 
+
+
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -92,8 +94,6 @@ public class Database {
 			ATM atm3 = new ATM(++olId);
 			save(atm3);
 			
-			System.out.println(atm3.getClass().getSimpleName());
-			System.out.println(b1.getClass().getSimpleName());
 
 			// Employee
 			Employee employee = new Employee("Ingrid", "Nunes", "ingrid",
@@ -117,22 +117,23 @@ public class Database {
 			CurrentAccount ca3 = new CurrentAccount(b2, 3l, client3, 10000);
 			save(ca3);
 			
-			System.out.println(ca1.getId().getNumber());
-			System.out.println(ca1.getBalance());
 			
 			// Transactions
 			Random r = new Random(System.currentTimeMillis());
 			Calendar cal = Calendar.getInstance();
 			for (int i = 0; i < 8; i++) {
+				double deposit_amount1 = r.nextDouble() * 150;
+				double deposit_amount2 = r.nextDouble() * 150;
 				changeDate(
-						ca1.deposit(b1, r.nextInt(10000), r.nextDouble() * 150,"FINALIZADA"),
+						ca1.deposit(b1, r.nextInt(10000), deposit_amount1 * 150,"FINALIZADO",true),
 						r, cal);
+				
 				changeDate(ca1.withdrawal(atm1, r.nextDouble() * 100), r, cal);
 				changeDate(ca1.transfer(atm2, ca2, r.nextDouble() * 100), r,
 						cal);
 
 				changeDate(
-						ca2.deposit(b2, r.nextInt(10000), r.nextDouble() * 150,"FINALIZADA"),
+						ca2.deposit(b2, r.nextInt(10000), deposit_amount2 * 150,"FINALIZADO",true),
 						r, cal);
 				changeDate(ca2.withdrawal(atm2, r.nextDouble() * 100), r, cal);
 				changeDate(ca2.transfer(atm3, ca1, r.nextDouble() * 100), r,

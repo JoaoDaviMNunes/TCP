@@ -73,17 +73,20 @@ public class StatementCommand extends Command {
 		}
 	}
 
-	private void printStatement(CurrentAccountId caId,
+	protected void printStatement(CurrentAccountId caId,
 			List<Transaction> transactions) {
 		StringBuffer sb = new StringBuffer();
+		sb.append(getTextManager().getText("entry")).append("\t");
 		sb.append(getTextManager().getText("date")).append("\t\t\t");
 		sb.append(getTextManager().getText("location")).append("\t");
 		sb.append(getTextManager().getText("operation.type")).append("\t");
 		sb.append(getTextManager().getText("details")).append("\t");
 		sb.append(getTextManager().getText("amount")).append("\t\t\t\t");
 		sb.append(getTextManager().getText("status")).append("\n");
-		sb.append("---------------------------------------------------------------------------------\n");
+		sb.append("-----------------------------------------------------------------------------------------------------------------------------------------------\n");
+		int item=1;
 		for (Transaction transaction : transactions) {
+			sb.append( item++).append("\t");
 			sb.append(UIUtils.INSTANCE.formatDateTime(transaction.getDate()))
 					.append("\t");
 			sb.append(transaction.getLocation()).append("\t");
@@ -118,7 +121,14 @@ public class StatementCommand extends Command {
 				sb.append("\t\t\t");
 				sb.append("- ").append(transaction.getAmount());
 			}
-			sb.append("\t");
+			
+			sb.append("\t\t\t");
+			
+			int max_tabs = 4 - Double.toString(transaction.getAmount()).length();
+			for(int i = 0; i<max_tabs;i++) {
+				sb.append("\t");
+			}
+			
 			sb.append(transaction.getStatus());
 			
 			sb.append("\n");
