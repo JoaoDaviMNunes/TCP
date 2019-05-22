@@ -1,0 +1,22 @@
+A parte do menu é relativamente simples: O sistema exibe uma lista de opções através do showMenu() e lê a opção dada pelo usuário. Se ela for uma das funcionalidades (alocação de grupo de avaliação, avaliar produto ou seleção de de artigo) o programa vai fornecer a opção como chave do mapa e pegar o comando correspondente. Se não existir o comando (chave retorna elemento nulo), vai avisar ao usuário. Se existir vai executar. Caso o usuário informe a opção correspondente a de saída, o programa encerra
+
+O diagrama1 mostra a relação dos comandos com o banco de dados e a parte de logging. O processo de login tem uma mensagem de inicio, dado por startAllocation, e uma de fim, por endAllocation. São aquelas mensagem de "iniciando alocação ...", "encerrando alocação...". O productAllocationMessage é um método para exibir, formatada, a mensagem de que um produto X foi alocado a um avaliador Y. X  e y são as ids do produto e avaliador(usuário)
+O banco de dados vai ter as opções para ler e gravar os dados. Os dados do programa são todos os avaliadores(usuários), produtos e grupos de avaliação.
+
+Um produto vai ter id, nome e categoria. Ele vai estar associado a um Usuário, o qual lhe sugeriu a empresa.
+O grupo de avaliação vai ter um nome(a sigla), está associado a um grupo de usuários (seus membros) e 1 ou mais produtos, os quais o grupo avaliou. Além disso, o grupo de avaliação vai ter as avaliações feitas por ele(a nota tem o produto avaliado e o avaliador que deu a nota)
+O usuário é o avaliador. Vai ter id, nome, estado e categorias de produtos de interesse. 
+
+Como tem associação cruzada, para criar esses objetos inicializa-se os apenas com os dados únicos a eles. Por exemplo, cria um produto New com uma ID 123, nome ABC e categoria NUM1. Depois cria o avaliador que sugeriu o produto, e associa a esse. Para quem for implementar, Fica tipo assim
+Produto.add(New Product($DADOS_PRODUTO));
+Usuario.add(New User($DADOS_USUARIO));
+grupoAvaliacao.add(new EvaluationGroup($DADOS_GRUPO));
+
+produto(0).userSet(Usuario(1) );
+
+____
+
+Eu sugiro ter uns 5 diagramas no total
+1 diagrama de sequencia para inicializar o banco de dados
+1 diagrama de sequencia para o menu
+1 diagrama de sequencia para cada comando(3 diagramas)
