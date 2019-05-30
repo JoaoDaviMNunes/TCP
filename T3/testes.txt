@@ -1,0 +1,32 @@
+MENU
+
+classe invalida: fora das três opções
+classes validas: três opções
+
+
+Alocação
+_______
+classe invalida 1 : num avaliadores < 2;
+classe invalida 2 : num avaliadores > 5;
+classe valida : 2 <= num avaliadores <= 5;
+
+classe invalida 3: grupo de avaliação não alocado
+classe invalida 4: grupo de avaliação não existe;
+_______
+
+
+Nota
+
+classe invalida 1 : produto não existe
+classe invalida 2 : nota < -3;
+classe invalida 3: nota > 3;
+
+
+classe valida : -3 <= nota <= 3;
+
+
+seleção produtos
+
+classe invalida 1: grupo de avaliação sem notas
+classe invalida 2: grupo de avaliação não alocado;
+classe valida 1 : grupo de avaliação alocado e com notas
