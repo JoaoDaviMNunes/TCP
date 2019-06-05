@@ -30,12 +30,14 @@ public class EvaluationTest {
 	public void test1() {
 		Evaluation1.setScore(Evaluation1.maxScore);
 		assertEquals(Evaluation1.getScore().intValue(),Evaluation1.maxScore);
+		assertTrue(Evaluation1.isDone());
 	}
 	
 	@Test
 	public void test2() {
 		Evaluation2.setScore(Evaluation1.minScore);
 		assertEquals(Evaluation2.getScore().intValue(),Evaluation1.minScore);
+		assertTrue(Evaluation2.isDone());
 	
 	}
 	@Test
@@ -52,6 +54,7 @@ public class EvaluationTest {
 		
 		catch(IllegalArgumentException e) {
 			System.out.println(e.getMessage());
+			assertFalse(Evaluation4.isDone());
 		}
 		
 	}
@@ -64,6 +67,7 @@ public class EvaluationTest {
 		
 		catch(IllegalArgumentException e) {
 			System.out.println(e.getMessage());
+			assertFalse(Evaluation5.isDone());
 		}
 	}
 
