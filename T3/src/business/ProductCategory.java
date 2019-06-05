@@ -7,15 +7,8 @@ public class ProductCategory {
 		this.name = "INDEFINIDA";
 	}
 	
-	public ProductCategory(String name) throws NullPointerException{
-		try {
+	public ProductCategory(String name) {
 			this.name = name;
-		}
-		
-		catch( NullPointerException e) {
-			this.name = "NULLSTRING";
-		}
-		
 	}
 	
 	public void setName(String name) {
@@ -27,8 +20,16 @@ public class ProductCategory {
 	}
 	
 	
-	public boolean compareName(String comparationName) {
-		return (comparationName.toUpperCase() == this.name.toUpperCase());
+	public boolean compareName(String comparationName) throws NullPointerException{
+		
+		try {
+			return (comparationName.toUpperCase() == this.name.toUpperCase());
+		}
+		
+		catch(NullPointerException e) {
+			return false;
+		}
+		
 	}
 
 }
