@@ -3,6 +3,8 @@ package business;
 public class Evaluation {
 	
 	private Integer score;
+	private User evaluator;
+	private EvaluationGroup group;
 	public final int minScore = -3;
 	public final int maxScore = 3;
 	
@@ -11,8 +13,8 @@ public class Evaluation {
 		
 	}
 	
-	public Evaluation(Integer newScore) throws IllegalArgumentException{
-		setScore(newScore);
+	public Evaluation(Integer NewScore) throws IllegalArgumentException{
+		setScore(NewScore);
 		
 	}
 	
