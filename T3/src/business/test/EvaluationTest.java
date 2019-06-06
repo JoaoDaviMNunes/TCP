@@ -28,15 +28,15 @@ public class EvaluationTest {
 	
 	@Test
 	public void test1() {
-		Evaluation1.setScore(Evaluation1.maxScore);
-		assertEquals(Evaluation1.getScore().intValue(),Evaluation1.maxScore);
+		Evaluation1.setScore(Evaluation.maxScore);
+		assertEquals(Evaluation1.getScore().intValue(),Evaluation.maxScore);
 		assertTrue(Evaluation1.isDone());
 	}
 	
 	@Test
 	public void test2() {
-		Evaluation2.setScore(Evaluation1.minScore);
-		assertEquals(Evaluation2.getScore().intValue(),Evaluation1.minScore);
+		Evaluation2.setScore(Evaluation.minScore);
+		assertEquals(Evaluation2.getScore().intValue(),Evaluation.minScore);
 		assertTrue(Evaluation2.isDone());
 	
 	}

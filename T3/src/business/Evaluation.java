@@ -6,8 +6,8 @@ public class Evaluation {
 	private User evaluator;
 	private EvaluationGroup group;
 	private Product EvaluatedProduct;
-	public final int minScore = -3;
-	public final int maxScore = 3;
+	static public final int minScore = -3;
+	static public final int maxScore = 3;
 	
 	public Evaluation() {
 		score = null;
