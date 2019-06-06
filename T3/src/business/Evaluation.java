@@ -24,6 +24,14 @@ public class Evaluation {
 		setEvaluator(evaluator);
 	}
 	
+	public Evaluation(EvaluationGroup group, Product product, User evaluator,Integer NewScore) {
+		setGroup(group);
+		setProduct(product);
+		setEvaluator(evaluator);
+		setScore(NewScore);
+	}
+	
+	
 	
 	
 	public void setEvaluator(User evaluator) {
