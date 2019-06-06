@@ -89,6 +89,15 @@ public class Product {
 		}
 	}
 	
+	public Boolean isAcceptable() {
+		return true;
+		
+	}
+	
+	public Boolean evaluationDone() {
+		return !evaluations.isEmpty();
+	}
+	
 	
 	
 	

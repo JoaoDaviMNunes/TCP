@@ -12,6 +12,25 @@ public class Database {
 	private Map<Integer, Product> products;
 	private Map<String,EvaluationGroup> EvaluationGroups;
 	
+	public Product getProduct(int id) {
+		return products.get(id);
+	}
+	
+	public List<Product> getAllProducts(){
+		return (List<Product>) products.values();
+	}
+	
+	
+	public EvaluationGroup getEvaluationGroup(String name) {
+		return EvaluationGroups.get(name);
+		
+	}
+	
+	public List<EvaluationGroup> getAllEvaluationGroups(){
+		
+		return (List<EvaluationGroup>) EvaluationGroups.values();
+	}
+	
 	public User getUser(int id) {
 		return users.get(id);
 	}
@@ -27,6 +46,10 @@ public class Database {
 		
 	
 		return SelectedUsers;
+	}
+	
+	public List<User> getAllUsers(){
+		return (List<User>) users.values();
 	}
 
 }

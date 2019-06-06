@@ -30,7 +30,9 @@ public class EvaluationGroup {
 		
 	}
 	
-	
+	public void allocate (int numMembers) {
+		
+	}
 	
 	public void addEvaluation(Product EvaluatedProduct, User evaluator) {
 		Evaluation evaluation = new Evaluation(this,EvaluatedProduct,evaluator);
