@@ -11,7 +11,7 @@ public class Product {
 	private ProductCategory category;
 	private EvaluationGroup group;
 	
-	private final Double ScoreDivider = new Double(0.0);
+	public static final Double ScoreDivider = new Double(0.0);
 	
 	public Product() {}
 	
@@ -75,18 +75,22 @@ public class Product {
 		return sum.doubleValue()/evaluationCount.doubleValue();
 	}
 	
-	public Double getAverageScore(boolean acceptable) {
-		Number sum = new Double(0.0);
-		Number evaluationCount = new Integer(evaluations.values().size());
+	public String toString() {
+		String buffer = "";
+		buffer = buffer.concat("Nome: " + this.name);
+		buffer =buffer.concat("ID: " + this.id);
+		buffer = buffer.concat("Category: "+ this.category);
+		return buffer;
 		
-		Double Average = sum.doubleValue()/evaluationCount.doubleValue();
+	}
+	
+	public String toString(Double average) {
+		String buffer = "";
+		buffer = buffer.concat(this.toString());
+		buffer = buffer.concat("Average score: " + average);
+		return buffer;
 		
-		if((acceptable && Average >= ScoreDivider) || (!acceptable && Average < ScoreDivider)) {
-			return sum.doubleValue()/evaluationCount.doubleValue();}
 		
-		else {
-			return null;
-		}
 	}
 	
 	public Boolean isAcceptable() {

@@ -17,6 +17,11 @@ public class EvaluationGroup {
 	private List<User> members = new ArrayList<User>();
 	
 	
+	public EvaluationGroup(String name) {
+		this.name = name;
+	}
+	
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -37,9 +42,14 @@ public class EvaluationGroup {
 	public void addEvaluation(Product EvaluatedProduct, User evaluator) {
 		Evaluation evaluation = new Evaluation(this,EvaluatedProduct,evaluator);
 		List<Evaluation> CurrentEvaluations = evaluations.get(EvaluatedProduct);
-		CurrentEvaluations.add(evaluation);
+		if(CurrentEvaluations == null) {
+			evaluations.put(EvaluatedProduct, new ArrayList<Evaluation>(Arrays.asList(evaluation)));
+		}
 		
-		evaluations.put(EvaluatedProduct, CurrentEvaluations);
+		else {
+			CurrentEvaluations.add(evaluation);	
+			evaluations.put(EvaluatedProduct, CurrentEvaluations);
+		}
 	}
 	
 	private List<Product> getOrderedProducts(){
@@ -59,7 +69,7 @@ public class EvaluationGroup {
 			Product CurrentProduct = ProductIterator.next();
 			Double AverageScore = CurrentProduct.getAverageScore();
 			
-			if(AverageScore != null) {
+			if(AverageScore >= Product.ScoreDivider) {
 				AcceptableProducts.add(CurrentProduct);
 			
 				List <Product> AverageScoreProducts = ProductMap.get(AverageScore);
@@ -138,5 +148,7 @@ public class EvaluationGroup {
 		 return OrderedCandidateReviewers;
 		 
 	}
+	
+	
 
 }
