@@ -3,11 +3,14 @@ package business;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class EvaluationGroup {
@@ -56,44 +59,47 @@ public class EvaluationGroup {
 		
 	}
 	
-	public List<Product> getAcceptableProducts() {
-		List<Product> AcceptableProducts = new ArrayList<Product>();
-		TreeMap<Double,List<Product>> ProductMap = new TreeMap<Double,List<Product>> (Collections.reverseOrder());
+	private Map<Product,Double> getUnsortedProductAverageScoreMap(boolean acceptableProducts) {
+		Map<Product,Double> ProductAverageScoreMap = new HashMap<>();
 		
-		
-		Iterator<Product> ProductIterator = evaluations.keySet().iterator();
-		
-		while(ProductIterator.hasNext()) {
+		for(Iterator<Product> ProductIterator = evaluations.keySet().iterator();ProductIterator.hasNext();) {
 			Product CurrentProduct = ProductIterator.next();
 			Double AverageScore = CurrentProduct.getAverageScore();
 			
-			if(AverageScore >= Product.ScoreDivider) {
-				AcceptableProducts.add(CurrentProduct);
-			
-				List <Product> AverageScoreProducts = ProductMap.get(AverageScore);
-				
-				if(AverageScoreProducts == null) {
-					ProductMap.put(AverageScore, new ArrayList<Product>(Arrays.asList(CurrentProduct)));
-				}
-				
-				else {
-					AverageScoreProducts.add(CurrentProduct);
-					
-				}
+			if((acceptableProducts && Product.isAverageScoreAcceptable(AverageScore)) || (!acceptableProducts && !Product.isAverageScoreAcceptable(AverageScore)) ){
+				ProductAverageScoreMap.put(CurrentProduct, AverageScore);
 			}
+			
 		
+			
 		}
-		return AcceptableProducts;
+		
+		
+		return ProductAverageScoreMap;
+		
+	}
+	
+	
+	
+	public List<Product> getAcceptableProducts() {
+		
+		Map<Product,Double> ProductAverageScoreMap = getUnsortedProductAverageScoreMap(true);
+		LinkedHashMap<Product,Double>  ProductAverageScoreSorted = new LinkedHashMap<>();
+		
+		ProductAverageScoreMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).forEachOrdered(entry -> ProductAverageScoreSorted.put(entry.getKey(), entry.getValue()));
+		
+		
+		return new ArrayList<Product>(ProductAverageScoreSorted.keySet());
 		
 	}
 	
 	public List<Product> getNotAcceptableProducts() {
-		List<Product> NotAcceptableProducts = new ArrayList<Product>();
+		Map<Product,Double> ProductAverageScoreMap = getUnsortedProductAverageScoreMap(false);
+		LinkedHashMap<Product,Double>  ProductAverageScoreSorted = new LinkedHashMap<>();
 		
+		ProductAverageScoreMap.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEachOrdered(entry -> ProductAverageScoreSorted.put(entry.getKey(), entry.getValue()));
 		
-		
-		
-		return NotAcceptableProducts;
+		return new ArrayList<Product>(ProductAverageScoreSorted.keySet());
 		
 	}
 	
