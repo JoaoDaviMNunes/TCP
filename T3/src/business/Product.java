@@ -1,6 +1,12 @@
 package business;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class Product {
@@ -11,7 +17,9 @@ public class Product {
 	private ProductCategory category;
 	private EvaluationGroup group;
 	
-	public static final Double ScoreDivider = new Double(0.0);
+	
+	private static final int BigDecimalScale = 2;
+	public static final BigDecimal ScoreDivider = new BigDecimal("0.00").setScale(BigDecimalScale);
 	
 	public Product() {}
 	
@@ -70,16 +78,41 @@ public class Product {
 	
 	public Double getAverageScore() {
 		Number sum = new Double(0.0);
+		List<Evaluation> SumProducts = new ArrayList<Evaluation>( evaluations.values());
+		
+		for(Iterator<Evaluation> SumIterator = SumProducts.iterator(); SumIterator.hasNext();) {
+			sum = sum.doubleValue() + SumIterator.next().getScore().doubleValue();
+		}
+		
+		
 		Number evaluationCount = new Integer(evaluations.values().size());
 		
 		return sum.doubleValue()/evaluationCount.doubleValue();
 	}
 	
+	public static boolean isAverageScoreAcceptable(Double average) {
+		BigDecimal ComparisonAverageScore = BigDecimal.valueOf(average).setScale(BigDecimalScale, RoundingMode.HALF_UP);
+		
+		return (ComparisonAverageScore.compareTo(ScoreDivider) >= 0);
+	}
+	
+	
+	
+	
+	
+
+	
 	public String toString() {
-		String buffer = "";
+		String buffer = "\n-------------------------------------------\n";
 		buffer = buffer.concat("Nome: " + this.name);
-		buffer =buffer.concat("ID: " + this.id);
-		buffer = buffer.concat("Category: "+ this.category);
+		buffer =buffer.concat("\tID: " + this.id);
+		buffer = buffer.concat("\tCategory: "+ this.category);
+		
+		for(Map.Entry <User,Evaluation> entry: evaluations.entrySet()) {
+			buffer = buffer.concat(String.format("\n Evaluator %s | Score : %d", entry.getKey().getName(), entry.getValue().getScore()));
+		}
+		
+		buffer = buffer.concat("\n");
 		return buffer;
 		
 	}

@@ -29,12 +29,13 @@ class EvaluationGroupTest {
 			evaluators.add(evaluator);
 			
 			Product ProductToAdd = new Product(i,evaluator,"PRODUTO" + i);
-			Evaluation EvaluationToAdd = new Evaluation(groupA, ProductToAdd,evaluator,2);
-			
-			
+			Evaluation EvaluationToAdd = new Evaluation(groupA, ProductToAdd,evaluator,i/2+0);
 			
 			
 			ProductToAdd.addEvaluation(EvaluationToAdd, evaluator);
+			
+			System.out.println(ProductToAdd);
+			
 			products.add( ProductToAdd );
 		}
 		
@@ -50,8 +51,10 @@ class EvaluationGroupTest {
 
 	@Test
 	void test() {
+		System.out.println("Acceptable products:\n");
+		System.out.println(groupA.getAcceptableProducts());
 		
-		assertEquals(groupA.getAcceptableProducts().size(),5);
+		assertEquals(groupA.getAcceptableProducts().size(),6);
 	}
 
 }
