@@ -17,23 +17,43 @@ public class UserTest {
 
 	@Test
 	public void test1() {
-		try {
-			user.setStateOfResidence("SP");
-			assertEquals(user.getStateOfResidence(),"SP");
-		}
-		catch(IllegalArgumentException e) {
-			System.out.println(e.getMessage());
-			
-		}
+		User evaluator = new User(5,"MARIA","SP");
 	}
 	@Test
 	public void test2() {
-		try {
-			user.setStateOfResidence("KO");
-		}
-		catch(IllegalArgumentException e) {
-			System.out.println(e.getMessage());
-		}
+		User evaluator = new User(5,"O'REILY","SP");
+	}
+	
+	@Test
+	public void test5() {
+		User evaluator = new User(5,"GONÇALVES","SP");
+		
+	}
+	
+	@Test
+	public void test7() {
+		User evaluator = new User(5,"DAMIÃO GÜNNER","SP");
+		
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test3() {
+		User evaluator = new User(5,"MARIA++","SP");
+		
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test4() {
+		User evaluator = new User(5,"MARIA0","SP");
+		
+	}
+	
+	
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test6() {
+		User evaluator = new User(5,"MARIA","OL");
+		
 	}
 
 }

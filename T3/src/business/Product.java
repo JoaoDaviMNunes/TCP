@@ -154,7 +154,9 @@ public class Product implements Comparable<Product>{
 		String buffer = "\n-------------------------------------------\n";
 		buffer = buffer.concat("Nome: " + this.name);
 		buffer =buffer.concat("\tID: " + this.id);
-		buffer = buffer.concat("\tCategory: "+ this.category);
+		buffer = buffer.concat("\tCategoria: "+ this.category);
+		buffer = buffer.concat("\n Solicitador: ID " + this.solicitor.getID());
+		
 		
 		for(Map.Entry <User,Evaluation> entry: evaluations.entrySet()) {
 			buffer = buffer.concat(String.format("\n Evaluator %s | Score : %d", entry.getKey().getName(), entry.getValue().getScore()));
@@ -168,7 +170,7 @@ public class Product implements Comparable<Product>{
 	public String toString(Double average) {
 		String buffer = "";
 		buffer = buffer.concat(this.toString());
-		buffer = buffer.concat("Average score: " + average);
+		buffer = buffer.concat("\nAverage score: " + average);
 		return buffer;
 		
 		

@@ -2,24 +2,25 @@ package business.test;
 
 import business.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.*;
 
-class EvaluationGroupTest {
+import org.junit.Before;
+import org.junit.Test;
+
+public class EvaluationGroupTest {
 	
 	EvaluationGroup groupA;
 	List<User> evaluators = new ArrayList<User>();
 	List<Product> products = new ArrayList<Product>();
 	
 
-	@BeforeEach
-	void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		
 		groupA = new EvaluationGroup("ABC");
 		
@@ -53,7 +54,7 @@ class EvaluationGroupTest {
 	}
 
 	@Test
-	void test1() {
+	public void test1() {
 		System.out.println("Acceptable products:\n");
 		System.out.println(groupA.getAcceptableProducts());
 		System.out.println("End list acceptable\n");
@@ -62,9 +63,12 @@ class EvaluationGroupTest {
 	}
 	
 	@Test
-	void test2() {
+	public void test2() {
 		groupA.allocate(2);
 		
 	}
+	
+	
+	
 
 }

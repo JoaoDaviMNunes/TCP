@@ -29,7 +29,12 @@ public class ProductCategory {
 		catch(NullPointerException e) {
 			return false;
 		}
-		
+	
+	}
+	
+	@Override
+	public String toString() {
+		return getName();
 	}
 
 }
