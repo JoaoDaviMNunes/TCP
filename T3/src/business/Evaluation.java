@@ -72,7 +72,11 @@ public class Evaluation {
 			
 	}
 	
+	/**
+	 * Retorna verdadeiro se há uma nota não nula associada com a avaliação
+	 */
 	public boolean isDone() {
+		
 		return score != null;
 	}
 

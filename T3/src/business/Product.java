@@ -9,16 +9,22 @@ import java.util.List;
 import java.util.Map;
 
 public class Product implements Comparable<Product>{
-	private Integer id;
-	private String name;
-	private Map <User,Evaluation> evaluations = new HashMap<>();;
-	private User solicitor;
-	private ProductCategory category;
-	private EvaluationGroup group;
-	
-	
 	private static final int BigDecimalScale = 2;
 	public static final BigDecimal ScoreDivider = new BigDecimal("0.00").setScale(BigDecimalScale);
+	public static boolean isAverageScoreAcceptable(Double average) {
+		BigDecimal ComparisonAverageScore = BigDecimal.valueOf(average).setScale(BigDecimalScale, RoundingMode.HALF_UP);
+		
+		return (ComparisonAverageScore.compareTo(ScoreDivider) >= 0);
+	};
+	private Integer id;
+	private String name;
+	private Map <User,Evaluation> evaluations = new HashMap<>();
+	
+	
+	private User solicitor;
+	private ProductCategory category;
+	
+	private EvaluationGroup group;
 	
 	public Product() {}
 	
@@ -28,6 +34,7 @@ public class Product implements Comparable<Product>{
 		setSolicitor(solicitor);
 	}
 	
+	
 	public Product(int id, User solicitor , String name,ProductCategory category) {
 		setProductID(id);
 		setName(name);
@@ -35,11 +42,12 @@ public class Product implements Comparable<Product>{
 		setProductCategory(category);
 	}
 	
-	
 	public void addEvaluation(Evaluation productEvaluation) {
 		evaluations.put(productEvaluation.getEvaluator() ,productEvaluation);
 		
 	}
+	
+	
 	
 	public void addScore(User evaluator, Integer score) {
 		Evaluation toScore = evaluations.get(evaluator);
@@ -50,39 +58,29 @@ public class Product implements Comparable<Product>{
 		
 	}
 	
-	
-	
-	public User getSolicitor() {
-		return this.solicitor;
-	}
-	
-	public void setSolicitor(User solicitor) {
-		this.solicitor = solicitor;
+	@Override
+	public int compareTo(Product o) {
+		Integer id1 = new Integer(this.getProductID());
+		Integer id2 = new Integer(o.getProductID());
 		
+		
+		return id1.compareTo(id2);
 	}
 	
-	public void setProductCategory(ProductCategory category) {
-		this.category = category;
-	}
-	
-	public ProductCategory getProductCategory() {
-		return this.category;
-	}
-	
-	public int getProductID() {
-		return this.id.intValue();
-	}
-	
-	public void setProductID(int newID) {
-		this.id = newID;
-	}
-	
-	public String getName() {
-		return this.name;
-	}
-	
-	public void setName(String NewName) {
-		this.name = NewName;
+	/**
+	 * Verifica se todas as avaliações relacionadas com o produtos possuem nota atribuida. Retorna verdadeiro se sim.
+	 * 
+	 * */
+	public Boolean evaluationDone() {
+		if(evaluations.isEmpty()) return false;
+		for(Iterator<Evaluation> EvaluationIterator = evaluations.values().iterator();EvaluationIterator.hasNext();) {
+			if(EvaluationIterator.next().isDone() == false) {
+				return false;
+			}
+			
+		}
+		
+		return true;
 	}
 	
 	public Double getAverageScore() {
@@ -104,14 +102,33 @@ public class Product implements Comparable<Product>{
 		return new ArrayList<User>(evaluations.keySet());
 	}
 	
+	public String getName() {
+		return this.name;
+	}
 	
+	public ProductCategory getProductCategory() {
+		return this.category;
+	}
 	
+	public int getProductID() {
+		return this.id.intValue();
+	}
 	
+	public User getSolicitor() {
+		return this.solicitor;
+	}
 	
-	public static boolean isAverageScoreAcceptable(Double average) {
-		BigDecimal ComparisonAverageScore = BigDecimal.valueOf(average).setScale(BigDecimalScale, RoundingMode.HALF_UP);
+	public Boolean isAcceptable() {
+		return true;
 		
-		return (ComparisonAverageScore.compareTo(ScoreDivider) >= 0);
+	}
+	
+	
+	
+	
+	
+	public void setName(String NewName) {
+		this.name = NewName;
 	}
 	
 	
@@ -119,6 +136,19 @@ public class Product implements Comparable<Product>{
 	
 	
 
+	
+	public void setProductCategory(ProductCategory category) {
+		this.category = category;
+	}
+	
+	public void setProductID(int newID) {
+		this.id = newID;
+	}
+	
+	public void setSolicitor(User solicitor) {
+		this.solicitor = solicitor;
+		
+	}
 	
 	public String toString() {
 		String buffer = "\n-------------------------------------------\n";
@@ -134,7 +164,7 @@ public class Product implements Comparable<Product>{
 		return buffer;
 		
 	}
-	
+
 	public String toString(Double average) {
 		String buffer = "";
 		buffer = buffer.concat(this.toString());
@@ -142,24 +172,6 @@ public class Product implements Comparable<Product>{
 		return buffer;
 		
 		
-	}
-	
-	public Boolean isAcceptable() {
-		return true;
-		
-	}
-	
-	public Boolean evaluationDone() {
-		return !evaluations.isEmpty();
-	}
-
-	@Override
-	public int compareTo(Product o) {
-		Integer id1 = new Integer(this.getProductID());
-		Integer id2 = new Integer(o.getProductID());
-		
-		
-		return id1.compareTo(id2);
 	}
 	
 	

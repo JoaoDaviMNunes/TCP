@@ -73,13 +73,14 @@ public class EvaluationGroup {
 	public void addEvaluation(Product EvaluatedProduct, User evaluator) {
 		Evaluation evaluation = new Evaluation(this,EvaluatedProduct,evaluator);
 		List<Evaluation> CurrentEvaluations = evaluations.get(EvaluatedProduct);
-		if(CurrentEvaluations == null) {
-			evaluations.put(EvaluatedProduct, new ArrayList<Evaluation>(Arrays.asList(evaluation)));
+		
+		try {
+			CurrentEvaluations.add(evaluation);
+			evaluations.put(EvaluatedProduct, CurrentEvaluations);
 		}
 		
-		else {
-			CurrentEvaluations.add(evaluation);	
-			evaluations.put(EvaluatedProduct, CurrentEvaluations);
+		catch(NullPointerException e) {
+			evaluations.put(EvaluatedProduct, new ArrayList<Evaluation>(Arrays.asList(evaluation)));
 		}
 	}
 	

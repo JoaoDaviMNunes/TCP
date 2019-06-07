@@ -32,8 +32,16 @@ public class User{
 	
 	public void addEvaluation(Evaluation evaluation) {
 		List<Evaluation> CurrentEvaluations = evaluations.get(evaluation.getGroup());
-		CurrentEvaluations.add(evaluation);
-		evaluations.put(evaluation.getGroup(),CurrentEvaluations);
+		
+		try {
+			CurrentEvaluations.add(evaluation);
+			evaluations.put(evaluation.getGroup(),CurrentEvaluations);
+		}
+		
+		catch(NullPointerException e) {
+			evaluations.put(evaluation.getGroup(), new ArrayList<Evaluation>(Arrays.asList(evaluation)));
+		}
+		
 	}
 	
 	public int getEvaluationCount(EvaluationGroup group) {
