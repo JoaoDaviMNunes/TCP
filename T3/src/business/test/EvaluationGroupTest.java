@@ -27,6 +27,9 @@ class EvaluationGroupTest {
 		for(int i = 0; i <= 5; i++) {
 			User evaluator = new User(i,"MARIA","SP");
 			evaluators.add(evaluator);
+			evaluators.add(new User(i+3,"ROBERTO","RS"));
+			evaluators.add(new User(i+2,"ALBERTA","RS"));
+			evaluators.add(new User(i+5,"RODRIGO","RJ"));
 			
 			Product ProductToAdd = new Product(i,evaluator,"PRODUTO" + i);
 			Evaluation EvaluationToAdd = new Evaluation(groupA, ProductToAdd,evaluator,i/2+0);

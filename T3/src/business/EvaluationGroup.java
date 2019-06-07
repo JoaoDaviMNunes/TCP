@@ -43,6 +43,8 @@ public class EvaluationGroup {
 		System.out.println(getOrderedProducts());
 		System.out.println("\n______________________");
 		
+		
+		
 	}
 	
 	public void addEvaluation(Product EvaluatedProduct, User evaluator) {
@@ -110,48 +112,21 @@ public class EvaluationGroup {
 	}
 	
 	//private
-	public List<User> getOrderedCandidateReviewers(Product EvaluationProduct) {
-		 Iterator<User> MembersIterator = members.iterator();
-		 List<User> OrderedCandidateReviewers = new ArrayList<User>();
+	private List<User> getOrderedCandidateReviewers(Product EvaluationProduct) {
 		 
+		 List<User> CandidateReviewers = new ArrayList<User>();
 		 
-		 TreeMap<Integer,List<User>> CandidateReviewers = new TreeMap<>();
+		 UserComparator CandidateReviewersComparator = new UserComparator(this);
 		 
-		 while(MembersIterator.hasNext()) {
-			 User member = MembersIterator.next();
-			 
-			 int EvaluationCounter = member.getEvaluationCount(this);
-			 
-			 List<User> reviewers = CandidateReviewers.get(EvaluationCounter);
-			
-			 
-			 if(reviewers == null) {
-				 CandidateReviewers.put(EvaluationCounter,new ArrayList<User>(Arrays.asList(member)));
-				 
-			 }
-			 
-			 else {
-				 reviewers.add(member);
-			 }
+		 for(Iterator<User> MembersIterator = members.iterator();MembersIterator.hasNext();) {
+			 CandidateReviewers.add(MembersIterator.next());
 		 }
 		 
-		 for(Map.Entry<Integer,List<User>> entry: CandidateReviewers.entrySet()) {
-			 
-			 if(!OrderedCandidateReviewers.isEmpty()) {
-				 OrderedCandidateReviewers.addAll(entry.getValue());
-			 }
-			 
-			 else {
-				 OrderedCandidateReviewers = entry.getValue();
-			 }
-			 
-			 
-			 
-		 }
+		 Collections.sort(CandidateReviewers,CandidateReviewersComparator);
 		 
 		 
 		 
-		 return OrderedCandidateReviewers;
+		 return CandidateReviewers;
 		 
 	}
 	

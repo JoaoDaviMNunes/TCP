@@ -29,6 +29,14 @@ public class Product implements Comparable<Product>{
 		setSolicitor(solicitor);
 	}
 	
+	public Product(int id, User solicitor , String name,ProductCategory category) {
+		setProductID(id);
+		setName(name);
+		setSolicitor(solicitor);
+		setProductCategory(category);
+	}
+	
+	
 	public void addEvaluation(Evaluation productEvaluation, User evaluator) {
 		evaluations.put(evaluator, productEvaluation);
 		

@@ -3,11 +3,12 @@ package business;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class User {
+public class User{
 	private int id;
 	private String name;
 	private String StateOfResidence;
@@ -89,6 +90,8 @@ public class User {
 	public String getStateOfResidence() {
 		return this.StateOfResidence;
 	}
-	
 
+	
+	
 }
+
