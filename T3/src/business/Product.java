@@ -162,18 +162,32 @@ public class Product implements Comparable<Product>{
 	}
 	
 	public String toString() {
-		String buffer = "\n-------------------------------------------\n";
+		String buffer = "";
 		buffer = buffer.concat("Nome: " + this.name);
 		buffer =buffer.concat("\tID: " + this.id);
 		buffer = buffer.concat("\tCategoria: "+ this.category);
-		buffer = buffer.concat("\n Solicitador: ID " + this.solicitor.getID());
+		buffer = buffer.concat("\tSolicitador: ID " + this.solicitor.getID());
 		
 		
-		for(Map.Entry <User,Evaluation> entry: evaluations.entrySet()) {
-			buffer = buffer.concat(String.format("\n Evaluator %s | Score : %d", entry.getKey().getName(), entry.getValue().getScore()));
-		}
+		
 		
 		buffer = buffer.concat("\n");
+		return buffer;
+		
+	}
+	
+	public String toString(boolean verbose) {
+		String buffer = "";
+		buffer = buffer.concat(this.toString());
+		
+		if(verbose) {
+			for(Map.Entry <User,Evaluation> entry: evaluations.entrySet()) {
+				buffer = buffer.concat(String.format("\n Evaluator %s | Score : %d", entry.getKey().getName(), entry.getValue().getScore()));
+			}
+			
+		}
+		
+		
 		return buffer;
 		
 	}

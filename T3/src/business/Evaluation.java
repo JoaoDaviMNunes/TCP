@@ -22,6 +22,7 @@ public class Evaluation {
 		setGroup(group);
 		setProduct(product);
 		setEvaluator(evaluator);
+		score = null;
 	}
 	
 	public Evaluation(EvaluationGroup group, Product product, User evaluator,Integer NewScore) {
