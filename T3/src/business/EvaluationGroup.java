@@ -38,10 +38,32 @@ public class EvaluationGroup {
 		
 	}
 	
+	
+	
+	public boolean evaluationDone() {
+		for(Iterator<List<Evaluation>> EvaluationListIterator = evaluations.values().iterator(); EvaluationListIterator.hasNext();) {
+			
+				for(Iterator<Evaluation> EvaluationIterator = EvaluationListIterator.next().iterator();EvaluationIterator.hasNext();) {
+					
+					if(!EvaluationIterator.next().isDone()) {
+							return false;
+					}
+				
+			}
+			
+			
+		}
+		
+		return true;
+	}
+	
+	
 	public void allocate (int numMembers) {
 		System.out.println("Sorted by id\n");
 		System.out.println(getOrderedProducts());
 		System.out.println("\n______________________");
+		
+		
 		
 		
 		
@@ -107,9 +129,7 @@ public class EvaluationGroup {
 		
 	}
 	
-	public boolean isAllocated() {
-		return (!evaluations.isEmpty()) ;
-	}
+	
 	
 	//private
 	private List<User> getOrderedCandidateReviewers(Product EvaluationProduct) {
@@ -128,6 +148,10 @@ public class EvaluationGroup {
 		 
 		 return CandidateReviewers;
 		 
+	}
+	
+	public boolean isAllocated() {
+		return (!evaluations.isEmpty()) ;
 	}
 	
 	
