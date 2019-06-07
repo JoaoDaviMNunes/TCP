@@ -113,6 +113,10 @@ public class User{
 		this.InterestCategories = InterestCategories;
 	}
 	
+	
+	/**
+	 * Lança IllegalArgumentException se o estado informado não corresponder a uma sigla válida de estado brasileiro
+	 * */
 	public void setStateOfResidence(String StateOfResidence) throws IllegalArgumentException{
 		if(BrazilianStates.contains(StateOfResidence.toUpperCase())) {
 			this.StateOfResidence = StateOfResidence.toUpperCase();	

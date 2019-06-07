@@ -59,6 +59,10 @@ public class Evaluation {
 		return this.EvaluatedProduct;
 	}
 	
+	/**
+	 * Lança IllegalArgumentException se a nota informada não estiver no intervalo válido
+	 * <P>Intervalo de notas válidas: {@value #minScore} a {@value #maxScore}
+	 * */
 	public void setScore(Integer newScore ) throws IllegalArgumentException{
 		if(newScore.intValue() >= minScore && newScore.intValue() <= maxScore) {
 			this.score = newScore;

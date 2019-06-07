@@ -10,12 +10,9 @@ import java.util.Map;
 
 public class Product implements Comparable<Product>{
 	private static final int BigDecimalScale = 2;
-	public static final BigDecimal ScoreDivider = new BigDecimal("0.00").setScale(BigDecimalScale);
-	public static boolean isAverageScoreAcceptable(Double average) {
-		BigDecimal ComparisonAverageScore = BigDecimal.valueOf(average).setScale(BigDecimalScale, RoundingMode.HALF_UP);
-		
-		return (ComparisonAverageScore.compareTo(ScoreDivider) >= 0);
-	};
+	private static final String ScoreDividerStringValue = "0.00";
+	public static final BigDecimal ScoreDivider = new BigDecimal(ScoreDividerStringValue).setScale(BigDecimalScale);
+	
 	private Integer id;
 	private String name;
 	private Map <User,Evaluation> evaluations = new HashMap<>();
@@ -25,6 +22,20 @@ public class Product implements Comparable<Product>{
 	private ProductCategory category;
 	
 	private EvaluationGroup group;
+	
+	
+	/**
+	 * Dado certa nota média, retorna se ela é aceitável ou não em comparação ao ScoreDivider.
+	 * 
+	 * <P>Aceitável >= {@value #ScoreDividerStringValue}
+	 * 
+	 * <P>Não aceitável < {@value #ScoreDividerStringValue}
+	 * */
+	public static boolean isAverageScoreAcceptable(Double average) {
+		BigDecimal ComparisonAverageScore = BigDecimal.valueOf(average).setScale(BigDecimalScale, RoundingMode.HALF_UP);
+		
+		return (ComparisonAverageScore.compareTo(ScoreDivider) >= 0);
+	};
 	
 	public Product() {}
 	

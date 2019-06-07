@@ -14,11 +14,11 @@ public class EvaluationGroup {
 	private Map <Product,List<Evaluation> > evaluations = new HashMap<>();
 	private List<User> members = new ArrayList<User>();
 	
-	private final boolean SelectAcceptableProducts = true;
-	private final boolean SelectNotAcceptableProducts = !SelectAcceptableProducts;
+	private static final boolean SelectAcceptableProducts = true;
+	private static final boolean SelectNotAcceptableProducts = !SelectAcceptableProducts;
 	
-	private final boolean AscendingOrder = true;
-	private final boolean DescendingOrder = !AscendingOrder;
+	private static final boolean AscendingOrder = true;
+	private static final boolean DescendingOrder = !AscendingOrder;
 	
 	
 	public EvaluationGroup(String name) {
@@ -93,7 +93,10 @@ public class EvaluationGroup {
 		return ProductsToSort;
 		
 	}
-	
+	/**
+	 * Se o boolean acceptableProducts for {@value #SelectAcceptableProducts}, retorna um mapa de Produto para Nota Média de todos os produtos aceitáveis
+	 * <P> Se {@value #SelectNotAcceptableProducts}, retorna o mesmo mapa, mas com os produtos não aceitáveis
+	 * */
 	private Map<Product,Double> getUnsortedProductAverageScoreMap(boolean acceptableProducts) {
 		Map<Product,Double> ProductAverageScoreMap = new HashMap<>();
 		
