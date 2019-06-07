@@ -9,8 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class Product {
-	private int id;
+public class Product implements Comparable<Product>{
+	private Integer id;
 	private String name;
 	private Map <User,Evaluation> evaluations = new HashMap<>();;
 	private User solicitor;
@@ -43,6 +43,8 @@ public class Product {
 		
 	}
 	
+	
+	
 	public User getSolicitor() {
 		return this.solicitor;
 	}
@@ -61,7 +63,7 @@ public class Product {
 	}
 	
 	public int getProductID() {
-		return this.id;
+		return this.id.intValue();
 	}
 	
 	public void setProductID(int newID) {
@@ -133,6 +135,15 @@ public class Product {
 	
 	public Boolean evaluationDone() {
 		return !evaluations.isEmpty();
+	}
+
+	@Override
+	public int compareTo(Product o) {
+		Integer id1 = new Integer(this.getProductID());
+		Integer id2 = new Integer(o.getProductID());
+		
+		
+		return id1.compareTo(id2);
 	}
 	
 	

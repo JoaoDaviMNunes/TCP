@@ -39,6 +39,9 @@ public class EvaluationGroup {
 	}
 	
 	public void allocate (int numMembers) {
+		System.out.println("Sorted by id\n");
+		System.out.println(getOrderedProducts());
+		System.out.println("\n______________________");
 		
 	}
 	
@@ -57,7 +60,11 @@ public class EvaluationGroup {
 	
 	private List<Product> getOrderedProducts(){
 		
-		return new ArrayList<Product>(evaluations.keySet());
+		List<Product> ProductsToSort = new ArrayList<Product>(evaluations.keySet());
+		
+		Collections.sort(ProductsToSort);
+		
+		return ProductsToSort;
 		
 	}
 	
@@ -71,17 +78,10 @@ public class EvaluationGroup {
 			if((acceptableProducts && Product.isAverageScoreAcceptable(AverageScore)) || (!acceptableProducts && !Product.isAverageScoreAcceptable(AverageScore)) ){
 				ProductAverageScoreMap.put(CurrentProduct, AverageScore);
 			}
-			
-		
-			
 		}
-		
-		
 		return ProductAverageScoreMap;
 		
 	}
-	
-	
 	
 	public List<Product> getAcceptableProducts() {
 		

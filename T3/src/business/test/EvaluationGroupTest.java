@@ -50,11 +50,17 @@ class EvaluationGroupTest {
 	}
 
 	@Test
-	void test() {
+	void test1() {
 		System.out.println("Acceptable products:\n");
 		System.out.println(groupA.getAcceptableProducts());
 		
 		assertEquals(groupA.getAcceptableProducts().size(),6);
+	}
+	
+	@Test
+	void test2() {
+		groupA.allocate(2);
+		
 	}
 
 }
