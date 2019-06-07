@@ -3,7 +3,6 @@ package business;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -37,8 +36,8 @@ public class Product implements Comparable<Product>{
 	}
 	
 	
-	public void addEvaluation(Evaluation productEvaluation, User evaluator) {
-		evaluations.put(evaluator, productEvaluation);
+	public void addEvaluation(Evaluation productEvaluation) {
+		evaluations.put(productEvaluation.getEvaluator() ,productEvaluation);
 		
 	}
 	
@@ -99,6 +98,15 @@ public class Product implements Comparable<Product>{
 		
 		return sum.doubleValue()/evaluationCount.doubleValue();
 	}
+	
+	public List<User> getEvaluators(){
+		
+		return new ArrayList<User>(evaluations.keySet());
+	}
+	
+	
+	
+	
 	
 	public static boolean isAverageScoreAcceptable(Double average) {
 		BigDecimal ComparisonAverageScore = BigDecimal.valueOf(average).setScale(BigDecimalScale, RoundingMode.HALF_UP);

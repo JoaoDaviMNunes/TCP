@@ -35,7 +35,7 @@ class EvaluationGroupTest {
 			Evaluation EvaluationToAdd = new Evaluation(groupA, ProductToAdd,evaluator,i/2+0);
 			
 			
-			ProductToAdd.addEvaluation(EvaluationToAdd, evaluator);
+			ProductToAdd.addEvaluation(EvaluationToAdd);
 			
 			System.out.println(ProductToAdd);
 			
@@ -56,6 +56,7 @@ class EvaluationGroupTest {
 	void test1() {
 		System.out.println("Acceptable products:\n");
 		System.out.println(groupA.getAcceptableProducts());
+		System.out.println("End list acceptable\n");
 		
 		assertEquals(groupA.getAcceptableProducts().size(),6);
 	}

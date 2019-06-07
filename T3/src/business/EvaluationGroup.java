@@ -3,21 +3,22 @@ package business;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 public class EvaluationGroup {
 	
 	private String name;
 	private Map <Product,List<Evaluation> > evaluations = new HashMap<>();
 	private List<User> members = new ArrayList<User>();
+	
+	private final boolean SelectAcceptableProducts = true;
+	private final boolean SelectNotAcceptableProducts = !SelectAcceptableProducts;
+	
+	private final boolean AscendingOrder = true;
+	private final boolean DescendingOrder = !AscendingOrder;
 	
 	
 	public EvaluationGroup(String name) {
@@ -109,23 +110,32 @@ public class EvaluationGroup {
 	
 	public List<Product> getAcceptableProducts() {
 		
-		Map<Product,Double> ProductAverageScoreMap = getUnsortedProductAverageScoreMap(true);
-		LinkedHashMap<Product,Double>  ProductAverageScoreSorted = new LinkedHashMap<>();
 		
-		ProductAverageScoreMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).forEachOrdered(entry -> ProductAverageScoreSorted.put(entry.getKey(), entry.getValue()));
+		Map<Product,Double> ProductAverageScoreMap = getUnsortedProductAverageScoreMap(SelectAcceptableProducts);
 		
 		
-		return new ArrayList<Product>(ProductAverageScoreSorted.keySet());
+		ProductComparator AcceptableProductComparator = new ProductComparator(ProductAverageScoreMap,DescendingOrder);
+		
+		List<Product> AcceptableProductsList = new ArrayList<Product>(ProductAverageScoreMap.keySet());
+		
+		Collections.sort(AcceptableProductsList, AcceptableProductComparator);
+		
+		
+		
+		return AcceptableProductsList;
 		
 	}
 	
 	public List<Product> getNotAcceptableProducts() {
-		Map<Product,Double> ProductAverageScoreMap = getUnsortedProductAverageScoreMap(false);
-		LinkedHashMap<Product,Double>  ProductAverageScoreSorted = new LinkedHashMap<>();
+		Map<Product,Double> ProductAverageScoreMap = getUnsortedProductAverageScoreMap(SelectNotAcceptableProducts);
 		
-		ProductAverageScoreMap.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEachOrdered(entry -> ProductAverageScoreSorted.put(entry.getKey(), entry.getValue()));
 		
-		return new ArrayList<Product>(ProductAverageScoreSorted.keySet());
+		ProductComparator NotAcceptableProductComparator = new ProductComparator(ProductAverageScoreMap,AscendingOrder);
+		
+		List<Product> NotAcceptableProductsList = new ArrayList<Product>(ProductAverageScoreMap.keySet());
+		
+		Collections.sort(NotAcceptableProductsList, NotAcceptableProductComparator);
+		return NotAcceptableProductsList;
 		
 	}
 	
