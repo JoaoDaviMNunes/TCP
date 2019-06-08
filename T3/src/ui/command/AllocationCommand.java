@@ -7,6 +7,7 @@ public class AllocationCommand extends Command {
 	}
 	
 	public void execute() {
+		System.out.println("\n" + super.name);
 		
 	}
 	

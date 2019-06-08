@@ -11,6 +11,7 @@ import ui.command.*;
 
 public class Menu {
 	private static final TreeMap<Integer,Command> MenuMap = createMenuMap();
+	private static final int EncerrarPrograma = 0;
 	private static final int AllocationIndex = 1;
 	private static final int EvaluationSelectionIndex = 2;
 	private static final int GradeIndex = 3;
@@ -20,8 +21,9 @@ public class Menu {
 		CreatedMap.put(AllocationIndex, new AllocationCommand());
 		CreatedMap.put(EvaluationSelectionIndex, new EvaluationSelectionCommand());
 		CreatedMap.put(GradeIndex, new GradeCommand());
+		CreatedMap.put(EncerrarPrograma,new ExitCommand());
 		
-		return (TreeMap<Integer, Command>) Collections.unmodifiableMap(CreatedMap);
+		return CreatedMap;
 		
 	}
 	

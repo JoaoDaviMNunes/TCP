@@ -7,6 +7,6 @@ public class GradeCommand extends Command {
 	}
 	
 	public void execute() {
-		
+		System.out.println("\n" + super.name);
 	}
 }

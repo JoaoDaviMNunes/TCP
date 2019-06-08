@@ -22,7 +22,7 @@ public class IOUtils {
 				InputValue = new Integer(reader.readLine());
 				
 				if(InputValue.intValue() < min || InputValue.intValue() > max) {
-					System.out.println(String.format("Valor fora de intervalo: [%d a %d]" ,min,max));
+					System.out.println(String.format("Valor fora de intervalo"));
 					System.out.println(RepeatMessage);
 					
 				}
