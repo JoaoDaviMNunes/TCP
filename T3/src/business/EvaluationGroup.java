@@ -55,9 +55,22 @@ public class EvaluationGroup {
 	
 	
 	public void allocate (int numMembers) {
+		if(isAllocated() == false) return;
 		System.out.println("Sorted by id\n");
 		System.out.println(getOrderedProducts());
 		System.out.println("\n______________________");
+		
+		for(int i = 0; i < numMembers;i++) {
+			for(Product ProductAllocate : getOrderedProducts()) {
+				User evaluator = getOrderedCandidateReviewers(ProductAllocate).get(0);
+				addEvaluation(ProductAllocate, evaluator);
+				
+			}
+		}
+		
+		
+		
+		//System.out.println(getOrderedCandidateReviewers(evaluations.keySet()))
 		
 		
 		
@@ -147,7 +160,10 @@ public class EvaluationGroup {
 		 UserComparator CandidateReviewersComparator = new UserComparator(this);
 		 
 		 for(User candidate : members) {
-			 CandidateReviewers.add(candidate);
+			 if(candidate.canEvaluate(EvaluationProduct)) {
+				 CandidateReviewers.add(candidate);
+			 }
+			 
 		 }
 		 
 		 Collections.sort(CandidateReviewers,CandidateReviewersComparator);

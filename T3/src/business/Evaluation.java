@@ -23,6 +23,9 @@ public class Evaluation {
 		setProduct(product);
 		setEvaluator(evaluator);
 		score = null;
+		
+		product.addEvaluation(this);
+		evaluator.addEvaluation(this);
 	}
 	
 	public Evaluation(EvaluationGroup group, Product product, User evaluator,Integer NewScore) {
@@ -30,6 +33,9 @@ public class Evaluation {
 		setProduct(product);
 		setEvaluator(evaluator);
 		setScore(NewScore);
+		
+		product.addEvaluation(this);
+		evaluator.addEvaluation(this);
 	}
 	
 	
