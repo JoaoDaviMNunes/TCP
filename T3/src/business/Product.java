@@ -20,6 +20,14 @@ public class Product implements Comparable<Product>{
 	private User solicitor;
 	private ProductCategory category;
 	
+	public EvaluationGroup getGroup() {
+		return group;
+	}
+
+	public void setGroup(EvaluationGroup group) {
+		this.group = group;
+	}
+
 	private EvaluationGroup group;
 	
 	
@@ -51,6 +59,15 @@ public class Product implements Comparable<Product>{
 		setSolicitor(solicitor);
 		setProductCategory(category);
 	}
+	
+	public Product(int id, User solicitor , String name,ProductCategory category, EvaluationGroup group) {
+		setProductID(id);
+		setName(name);
+		setSolicitor(solicitor);
+		setProductCategory(category);
+		setGroup(group);
+	}
+	
 	
 	public void addEvaluation(Evaluation productEvaluation) {
 		evaluations.put(productEvaluation.getEvaluator() ,productEvaluation);

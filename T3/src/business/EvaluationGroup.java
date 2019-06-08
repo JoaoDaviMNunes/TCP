@@ -79,6 +79,11 @@ public class EvaluationGroup {
 	}
 	
 	public void addEvaluation(Product EvaluatedProduct, User evaluator) {
+		if(EvaluatedProduct == null ||  evaluator == null) {
+			
+		}
+		
+		
 		Evaluation evaluation = new Evaluation(this,EvaluatedProduct,evaluator);
 		List<Evaluation> CurrentEvaluations = evaluations.get(EvaluatedProduct);
 		

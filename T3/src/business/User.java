@@ -64,7 +64,13 @@ public class User{
 		User solicitor = EvaluationProduct.getSolicitor();
 		ProductCategory category = EvaluationProduct.getProductCategory();
 		
-		return(solicitor.getID() != this.id  &&  !this.StateOfResidence.contentEquals(solicitor.StateOfResidence) && this.InterestCategories.contains(category));
+		final boolean UserHasNotAlreadyEvaluatedProduct = EvaluationProduct.getEvaluation(this) == null;
+		final boolean UserIsNotSolicitor = solicitor.getID() != this.id;
+		final boolean UserLivesDifferenteStateThanSolicitor = this.StateOfResidence.contentEquals(solicitor.StateOfResidence);
+		final boolean UserInterestCategoriesMatchProducts = this.InterestCategories.contains(category);
+		
+		return(UserIsNotSolicitor && UserHasNotAlreadyEvaluatedProduct && UserLivesDifferenteStateThanSolicitor 
+				&& UserInterestCategoriesMatchProducts);
 		
 	
 	}
