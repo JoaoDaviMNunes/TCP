@@ -112,6 +112,10 @@ public class Product implements Comparable<Product>{
 		return new ArrayList<User>(evaluations.keySet());
 	}
 	
+	public Evaluation getEvaluation(User evaluator) {
+		return evaluations.get(evaluator);
+	}
+	
 	public String getName() {
 		return this.name;
 	}

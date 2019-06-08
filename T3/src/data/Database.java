@@ -12,6 +12,16 @@ public class Database {
 	private Map<Integer, Product> products;
 	private Map<String,EvaluationGroup> EvaluationGroups;
 	
+	public Database () {
+			//inicializar database
+	}
+	
+	
+	public int getTotalProductCount() {
+		return products.size();
+	}
+	
+	
 	public Product getProduct(int id) {
 		return products.get(id);
 	}
