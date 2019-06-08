@@ -1,5 +1,12 @@
 package ui.command;
 
-public class EvaluationSelectionCommand {
+public class EvaluationSelectionCommand extends Command{
 
+	public EvaluationSelectionCommand() {
+		super("Seleção de avaliações");
+	}
+
+	public void execute() {
+		
+	}
 }

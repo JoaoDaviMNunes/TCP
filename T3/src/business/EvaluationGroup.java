@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -42,17 +41,13 @@ public class EvaluationGroup {
 	
 	
 	public boolean evaluationDone() {
-		for(Iterator<List<Evaluation>> EvaluationListIterator = evaluations.values().iterator(); EvaluationListIterator.hasNext();) {
-			
-				for(Iterator<Evaluation> EvaluationIterator = EvaluationListIterator.next().iterator();EvaluationIterator.hasNext();) {
+		for(List<Evaluation> EvaluationList : evaluations.values()) {
+				for(Evaluation evaluation : EvaluationList) {
 					
-					if(!EvaluationIterator.next().isDone()) {
-							return false;
-					}
+					if(!evaluation.isDone()) {
+							return false;}
 				
 			}
-			
-			
 		}
 		
 		return true;
@@ -100,8 +95,7 @@ public class EvaluationGroup {
 	private Map<Product,Double> getUnsortedProductAverageScoreMap(boolean acceptableProducts) {
 		Map<Product,Double> ProductAverageScoreMap = new HashMap<>();
 		
-		for(Iterator<Product> ProductIterator = evaluations.keySet().iterator();ProductIterator.hasNext();) {
-			Product CurrentProduct = ProductIterator.next();
+		for(Product CurrentProduct : evaluations.keySet()){
 			Double AverageScore = CurrentProduct.getAverageScore();
 			
 			if((acceptableProducts && Product.isAverageScoreAcceptable(AverageScore)) || (!acceptableProducts && !Product.isAverageScoreAcceptable(AverageScore)) ){
@@ -152,8 +146,8 @@ public class EvaluationGroup {
 		 
 		 UserComparator CandidateReviewersComparator = new UserComparator(this);
 		 
-		 for(Iterator<User> MembersIterator = members.iterator();MembersIterator.hasNext();) {
-			 CandidateReviewers.add(MembersIterator.next());
+		 for(User candidate : members) {
+			 CandidateReviewers.add(candidate);
 		 }
 		 
 		 Collections.sort(CandidateReviewers,CandidateReviewersComparator);

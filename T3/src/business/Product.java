@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -84,8 +83,8 @@ public class Product implements Comparable<Product>{
 	 * */
 	public Boolean evaluationDone() {
 		if(evaluations.isEmpty()) return false;
-		for(Iterator<Evaluation> EvaluationIterator = evaluations.values().iterator();EvaluationIterator.hasNext();) {
-			if(EvaluationIterator.next().isDone() == false) {
+		for(Evaluation evaluation : evaluations.values()) {
+			if(evaluation.isDone() == false) {
 				return false;
 			}
 			
@@ -96,10 +95,10 @@ public class Product implements Comparable<Product>{
 	
 	public Double getAverageScore() {
 		Number sum = new Double(0.0);
-		List<Evaluation> SumProducts = new ArrayList<Evaluation>( evaluations.values());
+		List<Evaluation> SumEvaluations= new ArrayList<Evaluation>( evaluations.values());
 		
-		for(Iterator<Evaluation> SumIterator = SumProducts.iterator(); SumIterator.hasNext();) {
-			sum = sum.doubleValue() + SumIterator.next().getScore().doubleValue();
+		for(Evaluation evaluation : SumEvaluations) {
+			sum = sum.doubleValue() +  evaluation.getScore().doubleValue();
 		}
 		
 		

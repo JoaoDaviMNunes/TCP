@@ -3,7 +3,6 @@ package ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Iterator;
 import java.util.List;
 
 import business.*;
@@ -14,7 +13,7 @@ public class IOUtils {
 	private static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	
 	//INPUT METHODS
-	public static Integer readInteger(String message, int min, int max) {
+	public static Integer readInteger(String message, int min, int max, String RepeatMessage) {
 		Integer InputValue = null;
 		
 		while(InputValue == null || InputValue.intValue() < min || InputValue.intValue() > max) {
@@ -24,6 +23,7 @@ public class IOUtils {
 				
 				if(InputValue.intValue() < min || InputValue.intValue() > max) {
 					System.out.println(String.format("Valor fora de intervalo: [%d a %d]" ,min,max));
+					System.out.println(RepeatMessage);
 					
 				}
 			}
@@ -64,9 +64,9 @@ public class IOUtils {
 		String buffer = "";
 		
 		int index = 0;
-		for(Iterator<Product> ProductIterator = ProductList.iterator();ProductIterator.hasNext();++index) {
+		for(Product ProductPrint : ProductList) {
 			
-			buffer = buffer.concat(String.format("\n%d.%s",index,ProductIterator.next().toString(detailed)));
+			buffer = buffer.concat(String.format("\n%d.%s",++index,ProductPrint.toString(detailed)));
 		}
 		
 		return buffer;
@@ -77,8 +77,8 @@ public class IOUtils {
 		String buffer = "";
 		
 		int index = 0;
-		for(Iterator<User> UserIterator = Evaluators.iterator();UserIterator.hasNext();++index) {
-			buffer = buffer.concat(String.format("\n%d.%s",index,UserIterator.next().toString()));
+		for(User evaluator : Evaluators) {
+			buffer = buffer.concat(String.format("\n%d.%s",++index,evaluator.toString()));
 		}
 		
 		return buffer;
