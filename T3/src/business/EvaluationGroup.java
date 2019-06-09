@@ -20,6 +20,9 @@ public class EvaluationGroup {
 	private static final boolean DescendingOrder = !AscendingOrder;
 	
 	
+	public static final int NameWidth = 10;
+	
+	
 	public EvaluationGroup(String name) {
 		this.name = name;
 	}
@@ -75,6 +78,20 @@ public class EvaluationGroup {
 		
 		
 		
+		
+	}
+	
+	public void addExistingEvaluation(Product EvaluatedProduct, Evaluation ExistingEvaluation) {
+		List<Evaluation> CurrentEvaluations = evaluations.get(EvaluatedProduct);
+		
+		try {
+			CurrentEvaluations.add(ExistingEvaluation);
+			evaluations.put(EvaluatedProduct, CurrentEvaluations);
+		}
+		
+		catch(NullPointerException e) {
+			evaluations.put(EvaluatedProduct, new ArrayList<Evaluation>(Arrays.asList(ExistingEvaluation)));
+		}
 		
 	}
 	
@@ -181,6 +198,12 @@ public class EvaluationGroup {
 	
 	public boolean isAllocated() {
 		return (!evaluations.isEmpty()) ;
+	}
+
+
+	@Override
+	public String toString() {
+		return String.format("%-" + NameWidth + "s", name);
 	}
 	
 	

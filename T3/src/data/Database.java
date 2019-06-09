@@ -183,7 +183,10 @@ public class Database {
 			Integer score = DatabaseEvaluationInstance.score;
 			EvaluationGroup group = product.getGroup();
 			
-			evaluations.add(new Evaluation(group,product,evaluator,score));
+			Evaluation evaluation = new Evaluation(group,product,evaluator,score);
+			
+			group.addExistingEvaluation(product, evaluation);
+			evaluations.add(evaluation);
 		}
 	}
 	

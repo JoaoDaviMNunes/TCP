@@ -12,6 +12,12 @@ public class Product implements Comparable<Product>{
 	private static final String ScoreDividerStringValue = "0.00";
 	public static final BigDecimal ScoreDivider = new BigDecimal(ScoreDividerStringValue).setScale(BigDecimalScale);
 	
+	
+	public static final int ProductNameWidth = 30;
+	public static final int CategoryNameWidth = 20;
+	public static final int IDWidth = 16;
+	
+	
 	private Integer id;
 	private String name;
 	private Map <User,Evaluation> evaluations = new HashMap<>();
@@ -71,6 +77,8 @@ public class Product implements Comparable<Product>{
 	
 	public void addEvaluation(Evaluation productEvaluation) {
 		evaluations.put(productEvaluation.getEvaluator() ,productEvaluation);
+		
+		this.group.addExistingEvaluation(this,productEvaluation);
 		
 	}
 	
@@ -183,13 +191,7 @@ public class Product implements Comparable<Product>{
 	
 	public String toString() {
 		String buffer = "";
-		buffer = buffer.concat("Nome: " + this.name);
-		buffer =buffer.concat("\tID: " + this.id);
-		buffer = buffer.concat("\tCategoria: "+ this.category);
-		buffer = buffer.concat("\tSolicitador: ID " + this.solicitor.getID());
-		
-		
-		
+		buffer = buffer.concat(String.format("%-" + ProductNameWidth+ "s  | %-" + IDWidth + "d |  %-" + CategoryNameWidth + "s | %-" + IDWidth + "d |", this.name,this.id,this.category,this.solicitor.getID()));
 		
 		buffer = buffer.concat("\n");
 		return buffer;
