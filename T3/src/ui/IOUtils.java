@@ -66,7 +66,7 @@ public class IOUtils {
 		int index = 0;
 		for(Product ProductPrint : ProductList) {
 			
-			buffer = buffer.concat(String.format("\n%d.%s",++index,ProductPrint.toString(detailed)));
+			buffer = buffer.concat(String.format("\n%d.%s",index++,ProductPrint.toString(detailed)));
 		}
 		
 		return buffer;
@@ -78,7 +78,7 @@ public class IOUtils {
 		
 		int index = 0;
 		for(User evaluator : Evaluators) {
-			buffer = buffer.concat(String.format("\n%d.%s",++index,evaluator.toString()));
+			buffer = buffer.concat(String.format("\n%d.%s",index++,evaluator.toString()));
 		}
 		
 		return buffer;

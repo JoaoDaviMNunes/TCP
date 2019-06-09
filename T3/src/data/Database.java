@@ -25,7 +25,7 @@ public class Database {
 	final List<String> usernames = new ArrayList<>(Arrays.asList("João","Ana","Manoela","Joana","Miguel","Beatriz","Suzana","Natasha","Pedro","Carla"));
 	final List<String> states = new ArrayList<>(Arrays.asList("RS","SP","RS","CE","RS","CE","RS","CE","SP","SP"));
 	final List<String> ProductCategoryNames = new ArrayList<>(Arrays.asList("BB Cream","CC Cream","DD Cream","Foundation+SPF","Oil Free Matte SPF","Powder Sunscreen"));
-	final Map<String,ProductCategory> ProductCategories = new HashMap<>();
+	final Map<String,ProductCategory> ProductCategoriesNameMap = new HashMap<>();
 	
 	final List<Integer> IdsGroupA = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7));
 	final List<Integer> IdsGroupB = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7));
@@ -79,7 +79,7 @@ public class Database {
 	}
 	
 	public List<Product> getAllProducts(){
-		return (List<Product>) products.values();
+		return new ArrayList<Product>(products.values());
 	}
 	
 	
@@ -90,7 +90,7 @@ public class Database {
 	
 	public List<EvaluationGroup> getAllEvaluationGroups(){
 		
-		return (List<EvaluationGroup>) EvaluationGroups.values();
+		return new ArrayList<EvaluationGroup>( EvaluationGroups.values());
 	}
 	
 	public User getUser(int id) {
@@ -111,7 +111,7 @@ public class Database {
 	}
 	
 	public List<User> getAllUsers(){
-		return (List<User>) users.values();
+		return new ArrayList<User>(users.values());
 	}
 	
 	
@@ -133,10 +133,20 @@ public class Database {
 		EvaluationGroups.put(NameGroupC,new EvaluationGroup(NameGroupC));
 	}
 	
+	private void addCategoryToCategoryNameMap(ProductCategory category) {
+		ProductCategoriesNameMap.put(category.getName(), category);
+		
+		
+	}
+	
 	private List<ProductCategory> createProductCategoryList(List<String> names){
 		List<ProductCategory> ProductCategoryList = new ArrayList<>();
 		for(String name : names) {
-			ProductCategoryList.add(new ProductCategory(name));
+			
+			ProductCategory category = new ProductCategory(name);
+			
+			ProductCategoryList.add(category);
+			addCategoryToCategoryNameMap(category);
 			
 		}
 		return ProductCategoryList;
@@ -158,7 +168,7 @@ public class Database {
 					User solicitor = getUser(product.SolicitorID);
 					EvaluationGroup group = getEvaluationGroup(product.EvaluationGroupName);
 					String ProductName = product.ProductName;
-					ProductCategory category = ProductCategories.get(product.CategoryName);
+					ProductCategory category = ProductCategoriesNameMap.get(product.CategoryName);
 					
 					products.put( ProductID+1, new Product( ProductID+1, solicitor,  ProductName, category, group));
 					
@@ -255,9 +265,9 @@ class DatabaseProduct{
 	DatabaseProduct(int id, String name, int solicitorID, String evaluationGroupName, String categoryName) {
 		this.id = id;
 		this.ProductName = name;
-		SolicitorID = solicitorID;
-		EvaluationGroupName = evaluationGroupName;
-		CategoryName = categoryName;
+		this.SolicitorID = solicitorID;
+		this.EvaluationGroupName = evaluationGroupName;
+		this.CategoryName = categoryName;
 	}
 	
 	static List<DatabaseProduct> initializeDatabaseProductList() {

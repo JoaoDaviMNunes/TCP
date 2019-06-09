@@ -71,6 +71,10 @@ public class Evaluation {
 	 * <P>Intervalo de notas válidas: {@value #minScore} a {@value #maxScore}
 	 * */
 	public void setScore(Integer newScore ) throws IllegalArgumentException{
+		if(newScore == null) {
+			return;
+		}
+		
 		if(newScore.intValue() >= minScore && newScore.intValue() <= maxScore) {
 			this.score = newScore;
 		}
