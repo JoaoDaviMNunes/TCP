@@ -10,14 +10,18 @@ import business.*;
 
 public class Database {
 	
-	private Map<Integer, User> users;
-	private Map<Integer, Product> products;
-	private Map<String,EvaluationGroup> EvaluationGroups;
+	private Map<Integer, User> users = new HashMap<>();
+	private Map<Integer, Product> products = new HashMap<>();
+	private Map<String,EvaluationGroup> EvaluationGroups = new HashMap<>();
+	private List<Evaluation> evaluations = new ArrayList<>();
 	
 	
 	//constantes,dados inicias do database
 	final int NumTotalMembers = 10;
 	final int NumTotalProducts = 11;
+	final int NumTotalEvaluations = 12;
+	
+	
 	final List<String> usernames = new ArrayList<>(Arrays.asList("João","Ana","Manoela","Joana","Miguel","Beatriz","Suzana","Natasha","Pedro","Carla"));
 	final List<String> states = new ArrayList<>(Arrays.asList("RS","SP","RS","CE","RS","CE","RS","CE","SP","SP"));
 	final List<String> ProductCategoryNames = new ArrayList<>(Arrays.asList("BB Cream","CC Cream","DD Cream","Foundation+SPF","Oil Free Matte SPF","Powder Sunscreen"));
@@ -31,10 +35,13 @@ public class Database {
 	final String NameGroupB = "SPF B";
 	final String NameGroupC = "SPF C";
 	
-	final List<String> ProductsEvaluationGroupList = new ArrayList<>(Arrays.asList(""));
-	final List<String> ProductsCategoriesList = new ArrayList<>(Arrays.asList(""));
-	final List<Integer> SolicitorIDList = new ArrayList<>(Arrays.asList());
 	
+	
+	
+	
+	List<DatabaseProduct> DatabaseProductList = DatabaseProduct.initializeDatabaseProductList();
+	List<DatabaseEvaluation> DatabaseEvaluationList = DatabaseEvaluation.initializeDatabaseEvaluationList();
+	List<DatabaseUser> DatabaseUserList = DatabaseUser.initializeDatabaseUserList(this);
 	
 	
 	
@@ -43,29 +50,18 @@ public class Database {
 		
 		
 		
-		//cria categories
-		for(String category : ProductCategoryNames) {
-			ProductCategories.put(category, new ProductCategory(category));
-		}
-		
-		//cria usuários
-		for(int i=0;i<NumTotalMembers;i++) {
-			users.put(i+1,  new User(i+1,usernames.get(i),states.get(i)));
-		}
-		
-		for(int i=0;i<NumTotalProducts;i++) {
-		}
-		
-		
-		
-		
-		addCategoriesToUsers(ProductCategoryNames,ProductCategories);
-		
+		populateUsers();
 		createEvaluationGroups();
 		
 		addUsersToEvaluationGroup(IdsGroupA, NameGroupA);
 		addUsersToEvaluationGroup(IdsGroupB, NameGroupB);
 		addUsersToEvaluationGroup(IdsGroupC, NameGroupC);
+		
+		
+		
+		populateProducts();
+		
+		populateEvaluations();
 		
 		
 		
@@ -118,49 +114,7 @@ public class Database {
 		return (List<User>) users.values();
 	}
 	
-	private void addCategoriesToUsers(List<String> ProductCategoryNames,Map<String,ProductCategory> ProductCategories) {
-		//associa categorias a usuários
-				users.get(1).addCategory(ProductCategories.get("BB Cream"));
-				users.get(1).addCategory(ProductCategories.get("CC Cream"));
-				users.get(1).addCategory(ProductCategories.get("DD Cream"));
-				
-				users.get(2).addCategory(ProductCategories.get("CC Cream"));
-				users.get(2).addCategory(ProductCategories.get("DD Cream"));
-				users.get(2).addCategory(ProductCategories.get("Foundation+SPF"));
-				
-				users.get(3).addCategory(ProductCategories.get("BB Cream"));
-				users.get(3).addCategory(ProductCategories.get("Oil Free Matte SPF"));
-				
-				users.get(4).addCategory(ProductCategories.get("BB Cream"));
-				users.get(4).addCategory(ProductCategories.get("CC Cream"));
-				users.get(4).addCategory(ProductCategories.get("Foundation+SPF"));
-				users.get(4).addCategory(ProductCategories.get("Powder Sunscreen"));
-				
-				users.get(5).addCategory(ProductCategories.get("Foundation+SPF"));
-				users.get(5).addCategory(ProductCategories.get("DD Cream"));
-				users.get(5).addCategory(ProductCategories.get("Oil Free Matte SPF"));
-				
-				
-				users.get(6).addCategory(ProductCategories.get("Oil Free Matte SPF"));
-				users.get(6).addCategory(ProductCategories.get("CC Cream"));
-				users.get(6).addCategory(ProductCategories.get("Powder Sunscreen"));
-
-				users.get(7).addCategory(ProductCategories.get("Powder Sunscreen"));
-				users.get(7).addCategory(ProductCategories.get("CC Cream"));
-				users.get(7).addCategory(ProductCategories.get("DD Cream"));
-
-				users.get(8).addCategory(ProductCategories.get("BB Cream"));
-				users.get(8).addCategory(ProductCategories.get("CC Cream"));
-				users.get(8).addCategory(ProductCategories.get("DD Cream"));
-
-				users.get(9).addCategory(ProductCategories.get("Powder Sunscreen"));
-				users.get(9).addCategory(ProductCategories.get("Foundation+SPF"));
-
-				users.get(10).addCategory(ProductCategories.get("CC Cream"));
-				users.get(10).addCategory(ProductCategories.get("DD Cream"));
-				users.get(10).addCategory(ProductCategories.get("Oil Free Matte SPF"));
-
-	}
+	
 	
 	private void addUsersToEvaluationGroup(List<Integer> UserIDs, String EvaluationGroupName) {
 		List<User> UsersToAdd = getUser(UserIDs);
@@ -178,5 +132,197 @@ public class Database {
 		EvaluationGroups.put(NameGroupB,new EvaluationGroup(NameGroupB));
 		EvaluationGroups.put(NameGroupC,new EvaluationGroup(NameGroupC));
 	}
+	
+	private List<ProductCategory> createProductCategoryList(List<String> names){
+		List<ProductCategory> ProductCategoryList = new ArrayList<>();
+		for(String name : names) {
+			ProductCategoryList.add(new ProductCategory(name));
+			
+		}
+		return ProductCategoryList;
+	}
+	
+	private void populateUsers() {
+		for(DatabaseUser user : DatabaseUserList) {
+			users.put(user.UserID, new User(user.UserID,user.name,user.StateOfResidence,user.categories));
+		}
+		
+	}
 
+
+	private void populateProducts() {
+		int ProductID=0;
+		
+		for(DatabaseProduct product : DatabaseProductList) {
+					
+					User solicitor = getUser(product.SolicitorID);
+					EvaluationGroup group = getEvaluationGroup(product.EvaluationGroupName);
+					String ProductName = product.ProductName;
+					ProductCategory category = ProductCategories.get(product.CategoryName);
+					
+					products.put( ProductID+1, new Product( ProductID+1, solicitor,  ProductName, category, group));
+					
+					ProductID++;
+				}
+	}
+
+	private void populateEvaluations() {
+		for(DatabaseEvaluation DatabaseEvaluationInstance : DatabaseEvaluationList) {
+			User evaluator = getUser(DatabaseEvaluationInstance.EvaluatorID);
+			Product product = getProduct(DatabaseEvaluationInstance.ProductID);
+			Integer score = DatabaseEvaluationInstance.score;
+			EvaluationGroup group = product.getGroup();
+			
+			evaluations.add(new Evaluation(group,product,evaluator,score));
+		}
+	}
+	
+	Map<Integer,List<ProductCategory>> populateCategoriesMap(){
+		 Map<Integer,List<ProductCategory>> CategoriesMap = new HashMap<>();
+		 
+		CategoriesMap.put(1, createProductCategoryList(Arrays.asList("BB Cream","CC Cream","DD Cream")));
+		CategoriesMap.put(2, createProductCategoryList(Arrays.asList("Foundation+SPF","CC Cream","DD Cream")));
+		CategoriesMap.put(3, createProductCategoryList(Arrays.asList("BB Cream","Oil Free Matte SPF")));
+		CategoriesMap.put(4, createProductCategoryList(Arrays.asList("BB Cream","CC Cream","Foundation+SPF","Powder Sunscreen")));
+		CategoriesMap.put(5, createProductCategoryList(Arrays.asList("Foundation+SPF","DD Cream","Oil Free Matte SPF")));
+		CategoriesMap.put(6, createProductCategoryList(Arrays.asList("Oil Free Matte SPF","CC Cream","Powder Sunscreen")));
+		CategoriesMap.put(7, createProductCategoryList(Arrays.asList("Powder Sunscreen","CC Cream","DD Cream")));
+		CategoriesMap.put(8, createProductCategoryList(Arrays.asList("BB Cream","CC Cream","DD Cream")));
+		CategoriesMap.put(9, createProductCategoryList(Arrays.asList("Powder Sunscreen","Foundation+SPF")));
+		CategoriesMap.put(10, createProductCategoryList(Arrays.asList("CC Cream","DD Cream","Oil Free Matte SPF")));
+
+		
+		
+		
+		return CategoriesMap;
+	}
+	
+
+}
+
+
+
+
+
+
+/**
+ * Classe para inicializar as avaliações do Database
+ * */
+class DatabaseEvaluation{
+	int ProductID;
+	int EvaluatorID;
+	Integer score;
+	
+	DatabaseEvaluation(int productID, int evaluatorID, Integer score) {
+		ProductID = productID;
+		EvaluatorID = evaluatorID;
+		this.score = score;
+	}
+	
+	static List<DatabaseEvaluation> initializeDatabaseEvaluationList(){
+		return(
+				new ArrayList<>(Arrays.asList(
+						new DatabaseEvaluation(1, 8, 2),
+						new DatabaseEvaluation(1,10, null),
+						new DatabaseEvaluation(2, 7, 2),
+						new DatabaseEvaluation(2, 2, 3),
+						new DatabaseEvaluation(3, 4, -1),
+						new DatabaseEvaluation(3, 6, 1),
+						new DatabaseEvaluation(4, 1, 1),
+						new DatabaseEvaluation(4,3, 0),
+						new DatabaseEvaluation(5, 4,-3),
+						new DatabaseEvaluation(5, 5, 3),
+						new DatabaseEvaluation(6,3, -1),
+						new DatabaseEvaluation(6,6, 0)
+						))
+			);
+		
+	}
+	
+	
+}
+
+/**
+ * Classe para inicializar os produtos do Database
+ * */
+class DatabaseProduct{
+	int id;
+	String ProductName;
+	int SolicitorID;
+	String EvaluationGroupName;
+	String CategoryName;
+	
+	DatabaseProduct(int id, String name, int solicitorID, String evaluationGroupName, String categoryName) {
+		this.id = id;
+		this.ProductName = name;
+		SolicitorID = solicitorID;
+		EvaluationGroupName = evaluationGroupName;
+		CategoryName = categoryName;
+	}
+	
+	static List<DatabaseProduct> initializeDatabaseProductList() {
+		
+		return(
+			new ArrayList<>(Arrays.asList(
+					new DatabaseProduct(1, "L’oreal DD Cream", 1, "SPF C", "DD Cream"),
+					new DatabaseProduct(2, "Avon CC Cream", 6, "SPF B", "CC Cream"),
+					new DatabaseProduct(3, "Revolution Powder Sunscreeen", 7, "SPF B", "Powder Sunscreen"),
+					new DatabaseProduct(4, "Maybelline BB Cream", 8, "SPF B", "BB Cream"),
+					new DatabaseProduct(5, "Revlon Foundation+SPF20", 9, "SPF B", "Foundation+SPF"),
+					new DatabaseProduct(6, "Nivea Matte Face SPF", 10, "SPF B", "Oil Free Matte SPF"),
+					new DatabaseProduct(7, "La Roche CC Cream", 6, "SPF B", "CC Cream"),
+					new DatabaseProduct(8, "Yves Rocher Powder+SPF15", 7, "SPF A", "Powder Sunscreen"),
+					new DatabaseProduct(9, "Nivea BB Cream", 8, "SPF A", "BB Cream"),
+					new DatabaseProduct(10, "Base O Boticário SPF20", 9, "SPF A", "Foundation+SPF"),
+					new DatabaseProduct(11, "Natura SPF20 Rosto Matte", 10, "SPF A", "Oil Free Matte SPF")
+					))
+		);
+		
+	}
+	
+	
+}
+
+
+/**
+ * Classe para inicializar os usuários do Database
+ * */
+class DatabaseUser{
+	int UserID;
+	String name;
+	String  StateOfResidence;
+	List<ProductCategory> categories;
+	
+	DatabaseUser(int userID, String name, String stateOfResidence, List<ProductCategory> categories) {
+		UserID = userID;
+		this.name = name;
+		StateOfResidence = stateOfResidence;
+		this.categories = categories;
+	}
+	
+	
+	
+	
+	static List<DatabaseUser> initializeDatabaseUserList(Database database){
+		Map<Integer,List<ProductCategory>> CategoriesIDMap = database.populateCategoriesMap();
+		
+		return(
+				new ArrayList<>(Arrays.asList(
+						new DatabaseUser(1, "João", "RS", CategoriesIDMap.get(1)),
+						new DatabaseUser(2, "Ana", "SP", CategoriesIDMap.get(2)),
+						new DatabaseUser(3, "Manoela", "RS", CategoriesIDMap.get(3)),
+						new DatabaseUser(4, "Joana", "CE", CategoriesIDMap.get(4)),
+						new DatabaseUser(5, "Miguel", "RS", CategoriesIDMap.get(5)),
+						new DatabaseUser(6, "Beatriz", "CE", CategoriesIDMap.get(6)),
+						new DatabaseUser(7, "Suzana", "RS", CategoriesIDMap.get(7)),
+						new DatabaseUser(8, "Natasha", "CE", CategoriesIDMap.get(8)),
+						new DatabaseUser(9, "Pedro", "SP", CategoriesIDMap.get(9)),
+						new DatabaseUser(10, "Carla", "SP", CategoriesIDMap.get(10))
+						
+				
+						))
+			);
+		
+	}
+	
 }

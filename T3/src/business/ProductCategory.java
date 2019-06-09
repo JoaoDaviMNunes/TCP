@@ -1,5 +1,8 @@
 package business;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductCategory {
 	String name;
 	
@@ -36,5 +39,7 @@ public class ProductCategory {
 	public String toString() {
 		return getName();
 	}
+	
+	
 
 }

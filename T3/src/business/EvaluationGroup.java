@@ -80,7 +80,7 @@ public class EvaluationGroup {
 	
 	public void addEvaluation(Product EvaluatedProduct, User evaluator) {
 		if(EvaluatedProduct == null ||  evaluator == null) {
-			
+			return;
 		}
 		
 		
