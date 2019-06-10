@@ -28,7 +28,7 @@ public class EvaluationGroupTest {
 		groupA = new EvaluationGroup("ABC");
 		
 		
-		for(int i = -3; i <= 8; i++) {
+		for(int i = -3; i <= 4; i++) {
 			evaluators.add(new User(i+4,"ROBERTO","RS"));
 			evaluators.add(new User(i+6,"ALBERTA","RS"));
 			evaluators.add(new User(i+5,"RODRIGO","RJ"));
@@ -50,8 +50,6 @@ public class EvaluationGroupTest {
 				
 				
 				ProductToAdd.addEvaluation(EvaluationToAdd);
-				
-				System.out.println(ProductToAdd);
 				
 				products.add( ProductToAdd );
 				

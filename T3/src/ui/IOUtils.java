@@ -117,7 +117,7 @@ public class IOUtils {
 		
 	}
 	
-	protected static String generateDivisoryLine() {
+	public static String generateDivisoryLine() {
 		String buffer = "\n";
 		int TotalWidth = 17 + Product.ProductNameWidth + Product.CategoryNameWidth + Product.IDWidth*2;
 		

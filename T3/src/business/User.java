@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.regex.*;
 
 public class User{
-	private int id;
+	private Integer id;
 	private String name;
 	private String StateOfResidence;
 	
@@ -33,10 +33,18 @@ public class User{
 	
 	public User() {}
 	
+	public User(int it) {
+		setID(id);
+		setName(null);
+		setStateOfResidence(null);
+		setInterestCategories(null);
+	}
+	
 	public User(int id, String name, String StateOfResidence) {
 		setID(id);
 		setName(name);
 		setStateOfResidence(StateOfResidence);	
+		setInterestCategories(null);
 	}
 	
 	public User(int id, String name, String StateOfResidence,List<ProductCategory> InterestCategories) {
@@ -136,6 +144,8 @@ public class User{
 	
 	public void setName(String name) throws IllegalArgumentException{
 		if(name == null) {
+			System.out.println(String.format("Avaliador id[%d] recebeu nome nulo",this.id));
+			this.name = null;
 			return;
 		}
 		
@@ -168,6 +178,9 @@ public class User{
 	 * */
 	public void setStateOfResidence(String StateOfResidence) throws IllegalArgumentException{
 		if(StateOfResidence == null) {
+			
+			System.out.println(String.format("Avaliador id[%d] recebeu estado nulo",this.id));
+			this.StateOfResidence = null;
 			return;
 		}
 		

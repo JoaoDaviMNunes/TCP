@@ -21,6 +21,8 @@ public class EvaluationGroup {
 	private static final boolean AscendingOrder = true;
 	private static final boolean DescendingOrder = !AscendingOrder;
 	
+
+	
 	
 	public static final int NameWidth = 10;
 	
@@ -64,12 +66,16 @@ public class EvaluationGroup {
 	
 	public void allocate (int numMembers) {
 		if(isAllocated() == true || numMembers < User.MinNumberOfEvaluatorsToAllocate || numMembers > User.MaxNumberOfEvaluatorsToAllocate) {
+			
+				
 				return;
 		}
 		
-		System.out.println("\nIniciando Alocação\n");
+		System.out.println(IOUtils.generateDivisoryLine());
+		System.out.println("Iniciando Alocação");
+		System.out.println(IOUtils.generateDivisoryLine());
 		
-		
+		int LogCount = 0;
 		
 		for(int i = 0; i < numMembers;i++) {
 			for(Product ProductAllocate : getOrderedProducts()) {
@@ -78,14 +84,14 @@ public class EvaluationGroup {
 				try {
 					User evaluator = getOrderedCandidateReviewers(ProductAllocate).get(0);
 					
-					System.out.println(String.format("Produto ID[%2d] alocado ao Avaliador ID[%2d]", ProductAllocate.getProductID(),evaluator.getID()));
+					System.out.println(String.format("%2d.Produto ID[%2d] alocado ao Avaliador ID[%2d]", LogCount++,ProductAllocate.getProductID(),evaluator.getID()));
 					
 					addEvaluation(ProductAllocate, evaluator);
 				} 
 				
 				
 				catch (IndexOutOfBoundsException e) {
-					System.out.println(String.format("\nNenhum candidato adequado disponível para ser o %2d° avaliador de Produto ID[%2d]",i,ProductAllocate.getProductID()));
+					System.out.println(String.format("%2d.Nenhum candidato adequado disponível para ser o %2d° avaliador de Produto ID[%2d]", LogCount++,i,ProductAllocate.getProductID()));
 
 				}
 				
@@ -95,8 +101,9 @@ public class EvaluationGroup {
 			}
 		}
 		
-		
-		System.out.println("\nFim da Alocação\n");
+		System.out.println(IOUtils.generateDivisoryLine());
+		System.out.println("\nFim da Alocação");
+		System.out.println(IOUtils.generateDivisoryLine());
 		
 		
 		
@@ -104,6 +111,9 @@ public class EvaluationGroup {
 		
 	}
 	
+	/**
+	 * Função auxiliar para inicialização do Database. Associa produtos ao grupo e aloca avaliações a ele.
+	 * */
 	public void addEvaluation(Product EvaluatedProduct, Evaluation ExistingEvaluation) {
 		List<Evaluation> CurrentEvaluations = evaluations.get(EvaluatedProduct);
 		
@@ -118,22 +128,32 @@ public class EvaluationGroup {
 		
 	}
 	
+	
+	/**
+	 * Função auxiliar para inicialização do Database. Associa produtos com o grupo sem que haja avaliações alocadas a ele.
+	 * */
 	public void AddUnallocatedProduct(Product product) {
+		if(product == null) {
+			throw new IllegalArgumentException("\nProduto nulo!");
+		}
 		
 		evaluations.put(product,null);
 	}
 	
 	
-	public void addEvaluation(Product EvaluatedProduct, User evaluator) {
+	/**
+	 * Cria avaliação a partir dos argumentos fornecidos e adiciona ao grupo {@throws IllegalArgumentException} se o produto ou avaliador recebido forem nulos
+	 * */
+	public void addEvaluation(Product EvaluatedProduct, User evaluator) throws IllegalArgumentException{
 		if(EvaluatedProduct == null ||  evaluator == null) {
-			return;
+			throw new IllegalArgumentException("\nProduto:" + EvaluatedProduct + "\nAvaliador:" + evaluator );
 		}
 		
-		
 		Evaluation evaluation = new Evaluation(this,EvaluatedProduct,evaluator);
-		List<Evaluation> CurrentEvaluations = evaluations.get(EvaluatedProduct);
-		
+
 		try {
+			
+			List<Evaluation> CurrentEvaluations = evaluations.get(EvaluatedProduct);
 			CurrentEvaluations.add(evaluation);
 			evaluations.put(EvaluatedProduct, CurrentEvaluations);
 		}
@@ -172,6 +192,8 @@ public class EvaluationGroup {
 		
 	}
 	
+	
+	
 	public List<Product> getAcceptableProducts() {
 		
 		
@@ -204,8 +226,7 @@ public class EvaluationGroup {
 	}
 	
 	
-	
-	//private
+
 	private List<User> getOrderedCandidateReviewers(Product EvaluationProduct) {
 		 
 		 List<User> CandidateReviewers = new ArrayList<User>();
