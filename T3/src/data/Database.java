@@ -22,14 +22,15 @@ public class Database {
 	final int NumTotalEvaluations = 12;
 	
 	
-	final List<String> usernames = new ArrayList<>(Arrays.asList("João","Ana","Manoela","Joana","Miguel","Beatriz","Suzana","Natasha","Pedro","Carla"));
-	final List<String> states = new ArrayList<>(Arrays.asList("RS","SP","RS","CE","RS","CE","RS","CE","SP","SP"));
-	final List<String> ProductCategoryNames = new ArrayList<>(Arrays.asList("BB Cream","CC Cream","DD Cream","Foundation+SPF","Oil Free Matte SPF","Powder Sunscreen"));
-	final Map<String,ProductCategory> ProductCategoriesNameMap = new HashMap<>();
+	
+	private final Map<String,ProductCategory> ProductCategoriesNameMap = new HashMap<>();
+	protected final Map<Integer,List<ProductCategory>> CategoriesIDMap = this.populateCategoriesMap();
 	
 	final List<Integer> IdsGroupA = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7));
 	final List<Integer> IdsGroupB = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7));
 	final List<Integer> IdsGroupC = new ArrayList<>(Arrays.asList(4, 5, 6, 7, 8, 9, 10));
+	
+	
 	
 	final String NameGroupA = "SPF A";
 	final String NameGroupB = "SPF B";
@@ -42,6 +43,7 @@ public class Database {
 	List<DatabaseProduct> DatabaseProductList = DatabaseProduct.initializeDatabaseProductList();
 	List<DatabaseEvaluation> DatabaseEvaluationList = DatabaseEvaluation.initializeDatabaseEvaluationList();
 	List<DatabaseUser> DatabaseUserList = DatabaseUser.initializeDatabaseUserList(this);
+	List<DatabaseEvaluationGroup> DatabaseEvaluationGroupList = DatabaseEvaluationGroup.initializeDatabaseEvaluationGroupList();
 	
 	
 	
@@ -51,20 +53,13 @@ public class Database {
 		
 		
 		populateUsers();
-		createEvaluationGroups();
-		
-		addUsersToEvaluationGroup(IdsGroupA, NameGroupA);
-		addUsersToEvaluationGroup(IdsGroupB, NameGroupB);
-		addUsersToEvaluationGroup(IdsGroupC, NameGroupC);
-		
-		
-		
+		populateEvaluationGroups();	
 		populateProducts();
-		
 		populateEvaluations();
 		
+		addProductsToUnallocatedEvaluationGroups();
 		
-		
+		addProductsToUnallocatedEvaluationGroups();
 		
 	}
 	
@@ -116,9 +111,8 @@ public class Database {
 	
 	
 	
-	private void addUsersToEvaluationGroup(List<Integer> UserIDs, String EvaluationGroupName) {
+	private void addUsersToEvaluationGroup(List<Integer> UserIDs, EvaluationGroup group) {
 		List<User> UsersToAdd = getUser(UserIDs);
-		EvaluationGroup group = getEvaluationGroup(EvaluationGroupName);
 		
 		for(User user : UsersToAdd) {
 			group.addMember(user);
@@ -127,10 +121,15 @@ public class Database {
 		
 	}
 	
-	private void createEvaluationGroups() {
-		EvaluationGroups.put(NameGroupA,new EvaluationGroup(NameGroupA));
-		EvaluationGroups.put(NameGroupB,new EvaluationGroup(NameGroupB));
-		EvaluationGroups.put(NameGroupC,new EvaluationGroup(NameGroupC));
+	private void addProductsToUnallocatedEvaluationGroups() {
+		for(Product UnallocatedProduct : products.values()) {
+			if(UnallocatedProduct.getGroup().isAllocated() == false) {
+				
+				UnallocatedProduct.getGroup().AddUnallocatedProduct(UnallocatedProduct);
+				
+			}
+		}
+		
 	}
 	
 	private void addCategoryToCategoryNameMap(ProductCategory category) {
@@ -158,6 +157,19 @@ public class Database {
 		}
 		
 	}
+	
+	private void populateEvaluationGroups() {
+		for(DatabaseEvaluationGroup DatabaseEvaluationGroupInstance : DatabaseEvaluationGroupList) {
+			String GroupName = DatabaseEvaluationGroupInstance.GroupName;
+			List<Integer> EvaluatorIDList = DatabaseEvaluationGroupInstance.EvaluatorIDList;
+			EvaluationGroup group = new EvaluationGroup(GroupName);
+			
+			EvaluationGroups.put(GroupName, group);
+			addUsersToEvaluationGroup(EvaluatorIDList,group);
+			
+		}
+		
+	}
 
 
 	private void populateProducts() {
@@ -178,15 +190,13 @@ public class Database {
 
 	private void populateEvaluations() {
 		for(DatabaseEvaluation DatabaseEvaluationInstance : DatabaseEvaluationList) {
+			
 			User evaluator = getUser(DatabaseEvaluationInstance.EvaluatorID);
 			Product product = getProduct(DatabaseEvaluationInstance.ProductID);
 			Integer score = DatabaseEvaluationInstance.score;
 			EvaluationGroup group = product.getGroup();
 			
-			Evaluation evaluation = new Evaluation(group,product,evaluator,score);
-			
-			group.addExistingEvaluation(product, evaluation);
-			evaluations.add(evaluation);
+			evaluations.add( new Evaluation(group,product,evaluator,score));
 		}
 	}
 	
@@ -255,6 +265,30 @@ class DatabaseEvaluation{
 	
 }
 
+class DatabaseEvaluationGroup{
+	String GroupName;
+	List<Integer> EvaluatorIDList;
+	
+	DatabaseEvaluationGroup(String groupName, List<Integer> evaluatorIDList) {
+		GroupName = groupName;
+		EvaluatorIDList = evaluatorIDList;
+	}
+	
+	static List<DatabaseEvaluationGroup> initializeDatabaseEvaluationGroupList(){
+		return(
+				new ArrayList<>(Arrays.asList(
+						new DatabaseEvaluationGroup("SPF A",new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7))),
+						new DatabaseEvaluationGroup("SPF B",new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7))),
+						new DatabaseEvaluationGroup("SPF C",new ArrayList<>(Arrays.asList(4, 5, 6, 7, 8, 9, 10)))
+						
+						
+						))
+			);
+		
+	}
+	
+}
+
 /**
  * Classe para inicializar os produtos do Database
  * */
@@ -317,7 +351,7 @@ class DatabaseUser{
 	
 	
 	static List<DatabaseUser> initializeDatabaseUserList(Database database){
-		Map<Integer,List<ProductCategory>> CategoriesIDMap = database.populateCategoriesMap();
+		Map<Integer,List<ProductCategory>> CategoriesIDMap = database.CategoriesIDMap;
 		
 		return(
 				new ArrayList<>(Arrays.asList(

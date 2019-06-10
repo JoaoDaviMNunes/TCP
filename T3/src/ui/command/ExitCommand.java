@@ -4,7 +4,7 @@ public class ExitCommand extends Command {
 	
 	public ExitCommand(){
 
-		super("Sair do programa");
+		super("Sair do programa",null);
 	}
 
 	@Override

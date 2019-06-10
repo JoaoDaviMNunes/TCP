@@ -36,6 +36,7 @@ public class Evaluation {
 		
 		product.addEvaluation(this);
 		evaluator.addEvaluation(this);
+		
 	}
 	
 	

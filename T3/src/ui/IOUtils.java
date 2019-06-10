@@ -26,7 +26,9 @@ public class IOUtils {
 				
 				if(InputValue.intValue() < min || InputValue.intValue() > max) {
 					System.out.println(String.format("Valor fora de intervalo"));
-					System.out.println(RepeatMessage);
+					
+					
+					if(RepeatMessage != null)	System.out.println(RepeatMessage);
 					
 				}
 			}
@@ -44,8 +46,10 @@ public class IOUtils {
 		
 	}
 	
-	public static String readString() {
+	public static String readString(String message) {
 		String InputString = null;
+		
+		System.out.println(message);
 		
 		try {
 			InputString = reader.readLine();
@@ -93,18 +97,32 @@ public class IOUtils {
 		String buffer = "";
 		
 		int index = 0;
-		buffer = buffer.concat(String.format("   %-" + Product.ProductNameWidth+ "s  | %-" + Product.IDWidth + "s |  %-" + Product.CategoryNameWidth + "s | %-" + Product.IDWidth + "s |\n", "Nome Produto","ID Produto","Categoria","ID Solicitador"));
+		
+		buffer = buffer.concat(generateDivisoryLine());
+		buffer = buffer.concat(String.format("\n|No |%-" + Product.ProductNameWidth+ "s  | %-" + Product.IDWidth + "s |  %-" + Product.CategoryNameWidth + "s | %-" + Product.IDWidth + "s |", "Nome Produto","ID Produto","Categoria","ID Solicitador"));
 
-		int TotalWidth = 14 + Product.ProductNameWidth + Product.CategoryNameWidth + Product.IDWidth*2;
-		buffer = buffer.concat("   ");
-		for(int i=0;i<TotalWidth;i++) {
-			buffer = buffer.concat("-");
-		}
+		
+		
+		buffer = buffer.concat(generateDivisoryLine());
+		
 		
 		
 		for(Product ProductPrint : ProductList) {
 			
-			buffer = buffer.concat(String.format("\n%-2d.%s",index++,ProductPrint.toString(detailed)));
+			buffer = buffer.concat(String.format("\n| %-2d|%s",index++,ProductPrint.toString(detailed)));
+			buffer = buffer.concat(generateDivisoryLine());
+		}
+		
+		return buffer;
+		
+	}
+	
+	protected static String generateDivisoryLine() {
+		String buffer = "\n";
+		int TotalWidth = 17 + Product.ProductNameWidth + Product.CategoryNameWidth + Product.IDWidth*2;
+		
+		for(int i=0;i<TotalWidth;i++) {
+			buffer = buffer.concat("_");
 		}
 		
 		return buffer;
@@ -115,8 +133,15 @@ public class IOUtils {
 		String buffer = "";
 		
 		int index = 0;
+		buffer = buffer.concat(generateDivisoryLine());
+		
+		buffer = buffer.concat(String.format("\n| No |%-" + User.UserNameWidth + "s | %-" + User.IDWidth + "s | %-" + User.StateNameWidth + "s | %-" + User.CategoryListWidth + "s", "Nome Usuário", "ID","Estado","Categorias Interesse"));
+		
+		buffer = buffer.concat(generateDivisoryLine());
+		
 		for(User evaluator : Evaluators) {
-			buffer = buffer.concat(String.format("\n%-2d.%s",index++,evaluator.toString()));
+			buffer = buffer.concat(String.format("\n| %-2d |%s",index++,evaluator.toString()));
+			buffer = buffer.concat(generateDivisoryLine());
 		}
 		
 		return buffer;

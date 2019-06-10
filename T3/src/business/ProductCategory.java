@@ -7,7 +7,7 @@ public class ProductCategory {
 	String name;
 	
 	public ProductCategory(){
-		this.name = "INDEFINIDA";
+		this.name = null;
 	}
 	
 	public ProductCategory(String name) {
@@ -39,6 +39,8 @@ public class ProductCategory {
 	public String toString() {
 		return getName();
 	}
+	
+	
 	
 	
 

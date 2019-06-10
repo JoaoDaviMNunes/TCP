@@ -78,7 +78,7 @@ public class Product implements Comparable<Product>{
 	public void addEvaluation(Evaluation productEvaluation) {
 		evaluations.put(productEvaluation.getEvaluator() ,productEvaluation);
 		
-		this.group.addExistingEvaluation(this,productEvaluation);
+		this.group.addEvaluation(this,productEvaluation);
 		
 	}
 	
@@ -193,7 +193,6 @@ public class Product implements Comparable<Product>{
 		String buffer = "";
 		buffer = buffer.concat(String.format("%-" + ProductNameWidth+ "s  | %-" + IDWidth + "d |  %-" + CategoryNameWidth + "s | %-" + IDWidth + "d |", this.name,this.id,this.category,this.solicitor.getID()));
 		
-		buffer = buffer.concat("\n");
 		return buffer;
 		
 	}

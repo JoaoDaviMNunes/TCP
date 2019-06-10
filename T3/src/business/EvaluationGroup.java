@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ui.IOUtils;
+
 public class EvaluationGroup {
 	
 	private String name;
@@ -52,28 +54,46 @@ public class EvaluationGroup {
 				
 			}
 		}
-		
+		System.out.println("Group has " + evaluations.keySet().size() + " evaluations");
 		return true;
 	}
 	
 	
 	public void allocate (int numMembers) {
-		if(isAllocated() == false) return;
+		if(isAllocated() == true) return;
 		System.out.println("Sorted by id\n");
-		System.out.println(getOrderedProducts());
-		System.out.println("\n______________________");
+		System.out.println(IOUtils.printSimpleProductList(getOrderedProducts()));
+		System.out.println("\n______________________ " +  getOrderedProducts().size());
+		
+		System.out.println("\nIniciando Alocação\n");
+		
+		
 		
 		for(int i = 0; i < numMembers;i++) {
 			for(Product ProductAllocate : getOrderedProducts()) {
-				User evaluator = getOrderedCandidateReviewers(ProductAllocate).get(0);
-				addEvaluation(ProductAllocate, evaluator);
+				
+				
+				try {
+					User evaluator = getOrderedCandidateReviewers(ProductAllocate).get(0);
+					
+					System.out.println(String.format("Produto ID[%2d] alocado ao Avaliador ID[%2d]", ProductAllocate.getProductID(),evaluator.getID()));
+					
+					addEvaluation(ProductAllocate, evaluator);
+				} 
+				
+				
+				catch (NullPointerException e) {
+
+				}
+				
+				
+				
 				
 			}
 		}
 		
 		
-		
-		//System.out.println(getOrderedCandidateReviewers(evaluations.keySet()))
+		System.out.println("\nFim da Alocação\n");
 		
 		
 		
@@ -81,7 +101,7 @@ public class EvaluationGroup {
 		
 	}
 	
-	public void addExistingEvaluation(Product EvaluatedProduct, Evaluation ExistingEvaluation) {
+	public void addEvaluation(Product EvaluatedProduct, Evaluation ExistingEvaluation) {
 		List<Evaluation> CurrentEvaluations = evaluations.get(EvaluatedProduct);
 		
 		try {
@@ -94,6 +114,12 @@ public class EvaluationGroup {
 		}
 		
 	}
+	
+	public void AddUnallocatedProduct(Product product) {
+		
+		evaluations.put(product,null);
+	}
+	
 	
 	public void addEvaluation(Product EvaluatedProduct, User evaluator) {
 		if(EvaluatedProduct == null ||  evaluator == null) {
@@ -197,7 +223,16 @@ public class EvaluationGroup {
 	}
 	
 	public boolean isAllocated() {
-		return (!evaluations.isEmpty()) ;
+		
+		if(evaluations.isEmpty() || evaluations.values().contains(null)) {
+			return false;
+		}
+		
+		else {
+			return true;
+		}
+		
+		
 	}
 
 

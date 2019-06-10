@@ -5,11 +5,12 @@ import ui.IOUtils;
 import java.util.List;
 
 import business.*;
+import data.Database;
 
 public class GradeCommand extends Command {
 
-	public GradeCommand() {
-		super("Atribuição de notas");
+	public GradeCommand(Database database) {
+		super("Atribuição de notas",database);
 	}
 	
 	public void execute() {

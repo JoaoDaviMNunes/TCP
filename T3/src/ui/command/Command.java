@@ -6,9 +6,9 @@ public abstract class Command {
 	protected String name;
 	protected final Database database;
 	
-	public Command(String name) {
+	public Command(String name, Database database) {
 		this.name = name;
-		database = new Database();
+		this.database = database;
 	}
 	
 	

@@ -3,12 +3,14 @@ package ui.command;
 import java.util.List;
 
 import business.EvaluationGroup;
+import business.Product;
+import data.Database;
 import ui.IOUtils;
 
 public class EvaluationSelectionCommand extends Command{
 
-	public EvaluationSelectionCommand() {
-		super("Seleção de avaliações");
+	public EvaluationSelectionCommand(Database database) {
+		super("Seleção de avaliações",database);
 	}
 
 	public void execute() {
@@ -21,12 +23,28 @@ public class EvaluationSelectionCommand extends Command{
 		int EvaluationGroupIndex = IOUtils.readInteger("Selecione o grupo de avaliação", 0, EvaluationGroupList.size()-1, EvaluationGroupListFormatted);
 		EvaluationGroup SelectedEvaluationGroup = EvaluationGroupList.get(EvaluationGroupIndex);
 		
-		System.out.println(SelectedEvaluationGroup);
+		System.out.println(SelectedEvaluationGroup + "\n");
+		
+		
 		
 		if(SelectedEvaluationGroup.isAllocated() == false || SelectedEvaluationGroup.evaluationDone() == false) {
 			System.out.println("\nGrupo não alocado ou com avaliações pendentes\nSaindo...");
 			System.out.println(SelectedEvaluationGroup.isAllocated());
 			System.exit(0);
+		}
+		
+		else {
+			List <Product> AcceptableProductList = SelectedEvaluationGroup.getAcceptableProducts();
+			List <Product> NotAcceptableProductList = SelectedEvaluationGroup.getNotAcceptableProducts();
+			
+			
+			
+			System.out.println("\nProdutos Aceitáveis ");
+			System.out.println(IOUtils.printSimpleProductList(AcceptableProductList));
+			
+			System.out.println("\nProdutos Nâo Aceitáveis ");
+			System.out.println(IOUtils.printSimpleProductList(NotAcceptableProductList));
+			
 		}
 		
 	}

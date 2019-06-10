@@ -21,6 +21,14 @@ public class User{
 	
 	private List<ProductCategory> InterestCategories = new ArrayList<>();
 	
+	public static final int UserNameWidth = 20;
+	public static final int StateNameWidth = 7;
+	public static final int IDWidth = 4;
+	public static final int CategoryListWidth = 30;
+	
+	public static final int MinNumberOfEvaluatorsToAllocate = 2;
+	public static final int MaxNumberOfEvaluatorsToAllocate = 5;
+	
 	
 	
 	public User() {}
@@ -62,12 +70,32 @@ public class User{
 	
 	public boolean canEvaluate(Product EvaluationProduct) {
 		User solicitor = EvaluationProduct.getSolicitor();
-		ProductCategory category = EvaluationProduct.getProductCategory();
+		ProductCategory EvaluationProductCategory = EvaluationProduct.getProductCategory();
 		
-		final boolean UserHasNotAlreadyEvaluatedProduct = EvaluationProduct.getEvaluation(this) == null;
-		final boolean UserIsNotSolicitor = solicitor.getID() != this.id;
-		final boolean UserLivesDifferenteStateThanSolicitor = this.StateOfResidence.contentEquals(solicitor.StateOfResidence);
-		final boolean UserInterestCategoriesMatchProducts = this.InterestCategories.contains(category);
+		
+		boolean UserHasNotAlreadyEvaluatedProduct = EvaluationProduct.getEvaluation(this) == null;
+		boolean UserIsNotSolicitor = solicitor.getID() != this.id;
+		boolean UserLivesDifferenteStateThanSolicitor = !this.StateOfResidence.contentEquals(solicitor.StateOfResidence);
+		
+		
+		boolean UserInterestCategoriesMatchProducts = false;
+		for(ProductCategory category : this.InterestCategories) {
+			if(category.getName().contentEquals(EvaluationProductCategory.getName())){
+				UserInterestCategoriesMatchProducts = true;
+			}
+			
+		}
+		
+		/*
+		System.out.println("\n");
+		System.out.println("\n" +EvaluationProductCategory );
+		System.out.println("\n" +this.InterestCategories);
+		
+		System.out.println(UserHasNotAlreadyEvaluatedProduct);
+		System.out.println(UserIsNotSolicitor);
+		System.out.println(UserLivesDifferenteStateThanSolicitor);
+		System.out.println(UserInterestCategoriesMatchProducts);
+		*/
 		
 		return(UserIsNotSolicitor && UserHasNotAlreadyEvaluatedProduct && UserLivesDifferenteStateThanSolicitor 
 				&& UserInterestCategoriesMatchProducts);
@@ -79,7 +107,14 @@ public class User{
 	
 	public int getEvaluationCount(EvaluationGroup group) {
 		
-		return evaluations.get(group).size();
+		try {
+			int EvaluationCount = evaluations.get(group).size();
+			return EvaluationCount;
+		} 
+		
+		catch (NullPointerException e) {
+			return 0;
+		}
 		
 	}
 	
@@ -136,7 +171,7 @@ public class User{
 	@Override
 	public String toString() {
 		String buffer = "";
-		buffer = buffer.concat(String.format("\nNome: %s | ID: %d | Estado: %s | Categorias de interesse : %s", name,id,StateOfResidence,InterestCategories));
+		buffer = buffer.concat(String.format("%-" + UserNameWidth + "s | %-" + IDWidth + "d | %-" + StateNameWidth + "s | %-" + CategoryListWidth + "s", name,id,StateOfResidence,InterestCategories));
 		
 		return buffer;
 		
