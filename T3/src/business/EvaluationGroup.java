@@ -114,7 +114,13 @@ public class EvaluationGroup {
 	/**
 	 * Função auxiliar para inicialização do Database. Associa produtos ao grupo e aloca avaliações a ele.
 	 * */
-	public void addEvaluation(Product EvaluatedProduct, Evaluation ExistingEvaluation) {
+	public void addEvaluation(Product EvaluatedProduct, Evaluation ExistingEvaluation) throws IllegalArgumentException{
+		
+		if(EvaluatedProduct == null || ExistingEvaluation == null) {
+			throw new IllegalArgumentException("\nProduto:" + EvaluatedProduct + "\nAvaliação:" + ExistingEvaluation);
+		}
+		
+		
 		List<Evaluation> CurrentEvaluations = evaluations.get(EvaluatedProduct);
 		
 		try {
@@ -132,7 +138,7 @@ public class EvaluationGroup {
 	/**
 	 * Função auxiliar para inicialização do Database. Associa produtos com o grupo sem que haja avaliações alocadas a ele.
 	 * */
-	public void AddUnallocatedProduct(Product product) {
+	public void AddUnallocatedProduct(Product product) throws IllegalArgumentException{
 		if(product == null) {
 			throw new IllegalArgumentException("\nProduto nulo!");
 		}

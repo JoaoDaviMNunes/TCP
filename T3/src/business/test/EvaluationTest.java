@@ -2,6 +2,7 @@ package business.test;
 
 import static org.junit.Assert.*;
 import business.*;
+import data.Database;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,65 +11,102 @@ import org.junit.Test;
 
 public class EvaluationTest {
 	
-	Evaluation Evaluation1;
-	Evaluation Evaluation2;
-	Evaluation Evaluation3;
-	Evaluation Evaluation4;
-	Evaluation Evaluation5;
+	Evaluation evaluation;
+	Database database;
 
 	@Before
 	public void setUp() throws Exception {
-		Evaluation1 = new Evaluation();
-		Evaluation2 = new Evaluation();
-		Evaluation3 = new Evaluation();
-		Evaluation4 = new Evaluation();
-		Evaluation5 = new Evaluation();
+		database = new Database();
 	}
 	
 	
 	@Test
 	public void test1() {
-		Evaluation1.setScore(Evaluation.maxScore);
-		assertEquals(Evaluation1.getScore().intValue(),Evaluation.maxScore);
-		assertTrue(Evaluation1.isDone());
+		evaluation = new Evaluation();
+		evaluation.setScore(Evaluation.maxScore);
+		assertEquals(evaluation.getScore().intValue(),Evaluation.maxScore);
+		assertTrue(evaluation.isDone());
 	}
 	
 	@Test
 	public void test2() {
-		Evaluation2.setScore(Evaluation.minScore);
-		assertEquals(Evaluation2.getScore().intValue(),Evaluation.minScore);
-		assertTrue(Evaluation2.isDone());
+		evaluation = new Evaluation();
+		evaluation.setScore(evaluation.minScore);
+		assertEquals(evaluation.getScore().intValue(),Evaluation.minScore);
+		assertTrue(evaluation.isDone());
 	
 	}
 	@Test
 	public void test3() {
-		assertFalse(Evaluation3.isDone());
+		evaluation = new Evaluation();
+		assertFalse(evaluation.isDone());
 		
 	}
 	
-	@Test
+	@Test (expected = IllegalArgumentException.class)
 	public void test4() {
-		try {
-			Evaluation4.setScore(-5);
-		}
-		
-		catch(IllegalArgumentException e) {
-			System.out.println(e.getMessage());
-			assertFalse(Evaluation4.isDone());
-		}
-		
+			evaluation = new Evaluation();
+			evaluation.setScore(-5);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void test5() {
+			evaluation = new Evaluation();
+			evaluation.setScore(10);
+
 	}
 	
 	@Test
-	public void test5() {
-		try {
-			Evaluation5.setScore(10);
-		}
+	public void test6() {
+		User user = new User(1,"MARIA","RJ",null);
+		EvaluationGroup group = database.getEvaluationGroup("SPF B");
+		Product product = new Product(5,user, "PRODUTO0",null,group);
 		
-		catch(IllegalArgumentException e) {
-			System.out.println(e.getMessage());
-			assertFalse(Evaluation5.isDone());
-		}
+		Evaluation evaluation = new Evaluation(group,product,user);
+		evaluation.setScore(0);
+		
 	}
 
+	@Test
+	public void test7() {
+		User user = new User(1,"MARIA","RJ",null);
+		EvaluationGroup group = database.getEvaluationGroup("SPF B");
+		Product product = new Product(5,user, "PRODUTO0",null,group);
+		
+		evaluation = new Evaluation(group,product,null);
+		evaluation.setScore(0);
+		
+	}
+
+	@Test
+	public void test8() {
+		User user = new User(1,"MARIA","RJ",null);
+		EvaluationGroup group = database.getEvaluationGroup("SPF B");
+		Product product = new Product(5,user, "PRODUTO0",null,group);
+		
+		evaluation = new Evaluation(null,product,user);
+		evaluation.setScore(0);
+		
+	}
+
+	@Test
+	public void test9() {
+		User user = new User(1,"MARIA","RJ",null);
+		EvaluationGroup group = database.getEvaluationGroup("SPF B");
+		Product product = new Product(5,user, "PRODUTO0",null,group);
+		
+		evaluation = new Evaluation(group,null,user);
+		evaluation.setScore(0);
+		
+	}
+	
+	@Test
+	public void test10() {
+		
+		evaluation = new Evaluation(null,null,null);
+		evaluation.setScore(0);
+		
+	}
+	
+	
 }

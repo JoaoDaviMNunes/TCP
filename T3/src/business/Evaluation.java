@@ -24,8 +24,10 @@ public class Evaluation {
 		setEvaluator(evaluator);
 		score = null;
 		
-		product.addEvaluation(this);
-		evaluator.addEvaluation(this);
+		
+		if(product != null) product.addEvaluation(this);
+		
+		if(evaluator != null) evaluator.addEvaluation(this);
 	}
 	
 	public Evaluation(EvaluationGroup group, Product product, User evaluator,Integer NewScore) {
