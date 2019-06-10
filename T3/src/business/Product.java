@@ -45,9 +45,21 @@ public class Product implements Comparable<Product>{
 	 * <P>Não aceitável < {@value #ScoreDividerStringValue}
 	 * */
 	public static boolean isAverageScoreAcceptable(Double average) {
-		BigDecimal ComparisonAverageScore = BigDecimal.valueOf(average).setScale(BigDecimalScale, RoundingMode.HALF_UP);
+		BigDecimal ComparisonAverageScore;
 		
-		return (ComparisonAverageScore.compareTo(ScoreDivider) >= 0);
+		try {
+			ComparisonAverageScore = BigDecimal.valueOf(average).setScale(BigDecimalScale, RoundingMode.HALF_UP);
+			return (ComparisonAverageScore.compareTo(ScoreDivider) >= 0);
+			
+		}
+		catch(NumberFormatException e) {
+			System.out.println("Number format exception:  " + average);
+			System.exit(1);
+		}
+		
+		
+		return false;
+		
 	};
 	
 	public Product() {}
@@ -78,7 +90,7 @@ public class Product implements Comparable<Product>{
 	public void addEvaluation(Evaluation productEvaluation) {
 		evaluations.put(productEvaluation.getEvaluator() ,productEvaluation);
 		
-		this.group.addEvaluation(this,productEvaluation);
+		//this.group.addEvaluation(this,productEvaluation);
 		
 	}
 	
@@ -123,13 +135,27 @@ public class Product implements Comparable<Product>{
 		List<Evaluation> SumEvaluations= new ArrayList<Evaluation>( evaluations.values());
 		
 		for(Evaluation evaluation : SumEvaluations) {
-			sum = sum.doubleValue() +  evaluation.getScore().doubleValue();
+			
+			try {
+				sum = sum.doubleValue() +  evaluation.getScore().doubleValue();
+			} 
+			
+			catch (NullPointerException e) {
+				return null;
+			}
 		}
 		
 		
 		Number evaluationCount = new Integer(evaluations.values().size());
 		
-		return sum.doubleValue()/evaluationCount.doubleValue();
+		Double result = sum.doubleValue()/evaluationCount.doubleValue();
+		
+		if(result.isNaN()) {
+			return null;
+		}
+		
+		
+		return result;
 	}
 	
 	public List<User> getEvaluators(){

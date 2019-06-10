@@ -36,6 +36,7 @@ public class Evaluation {
 		
 		product.addEvaluation(this);
 		evaluator.addEvaluation(this);
+		group.addEvaluation(product, this);
 		
 	}
 	
@@ -95,5 +96,7 @@ public class Evaluation {
 		
 		return score != null;
 	}
+	
+	
 
 }

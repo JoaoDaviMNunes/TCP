@@ -1,7 +1,7 @@
 package business.test;
 
 import business.*;
-
+import data.Database;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,37 +17,47 @@ public class EvaluationGroupTest {
 	EvaluationGroup groupA;
 	List<User> evaluators = new ArrayList<User>();
 	List<Product> products = new ArrayList<Product>();
+	Database database;
 	
 
 	@Before
 	public void setUp() throws Exception {
 		
+		database = new Database();
+		
 		groupA = new EvaluationGroup("ABC");
 		
 		
-		for(int i = 0; i <= 5; i++) {
-			User evaluator = new User(i,"MARIA","SP");
-			evaluators.add(evaluator);
-			evaluators.add(new User(i+3,"ROBERTO","RS"));
-			evaluators.add(new User(i+2,"ALBERTA","RS"));
+		for(int i = -3; i <= 8; i++) {
+			evaluators.add(new User(i+4,"ROBERTO","RS"));
+			evaluators.add(new User(i+6,"ALBERTA","RS"));
 			evaluators.add(new User(i+5,"RODRIGO","RJ"));
 			
-			Product ProductToAdd = new Product(i,evaluator,"PRODUTO" + i);
-			Evaluation EvaluationToAdd = new Evaluation(groupA, ProductToAdd,evaluator,i/2+0);
 			
 			
-			ProductToAdd.addEvaluation(EvaluationToAdd);
 			
-			System.out.println(ProductToAdd);
+			for(User user : evaluators) {
+				Product ProductToAdd = new Product(i+3,user,"PRODUTO" + i);
+				Evaluation EvaluationToAdd;
+				
+				try {
+					EvaluationToAdd = new Evaluation(groupA, ProductToAdd,user,i);
+				}
+				catch(IllegalArgumentException e) {
+					EvaluationToAdd = new Evaluation(groupA, ProductToAdd,user,-2);
+					
+				}
+				
+				
+				ProductToAdd.addEvaluation(EvaluationToAdd);
+				
+				System.out.println(ProductToAdd);
+				
+				products.add( ProductToAdd );
+				
+				
+			}
 			
-			products.add( ProductToAdd );
-		}
-		
-		Iterator<Product> EvaluationProductIterator = products.iterator();
-		Iterator<User> UserIterator = evaluators.iterator();
-		
-		while(EvaluationProductIterator.hasNext()) {
-			groupA.addEvaluation(EvaluationProductIterator.next(), UserIterator.next());
 		}
 		
 		
@@ -55,18 +65,90 @@ public class EvaluationGroupTest {
 
 	@Test
 	public void test1() {
-		System.out.println("Acceptable products:\n");
-		System.out.println(groupA.getAcceptableProducts());
-		System.out.println("End list acceptable\n");
+		groupA.getAcceptableProducts();
+		groupA.getNotAcceptableProducts();
 		
-		assertEquals(groupA.getAcceptableProducts().size(),6);
+		assertTrue(groupA.getAcceptableProducts().size() > 0);
+		assertTrue(groupA.getNotAcceptableProducts().size() > 0);
 	}
 	
 	@Test
 	public void test2() {
-		groupA.allocate(2);
+		EvaluationGroup group = database.getEvaluationGroup("SPF A");
+		group.allocate(2);
+		assertTrue(group.isAllocated());
+		assertFalse(group.evaluationDone());
+		assertTrue(group.getAcceptableProducts().size() == 0);
+		assertTrue(group.getNotAcceptableProducts().size() == 0);
+	}
+	
+	@Test
+	public void test3() {
+		EvaluationGroup group = database.getEvaluationGroup("SPF A");
+		group.allocate(1);
+		assertFalse(group.isAllocated());
+		assertFalse(group.evaluationDone());
+	}
+	
+	@Test
+	public void test4() {
+		EvaluationGroup group = database.getEvaluationGroup("SPF A");
+		group.allocate(5);
+		assertTrue(group.isAllocated());
+		assertFalse(group.evaluationDone());
+		assertTrue(group.getAcceptableProducts().size() == 0);
+		assertTrue(group.getNotAcceptableProducts().size() == 0);
+	}
+	
+	@Test
+	public void test5() {
+		EvaluationGroup group = database.getEvaluationGroup("SPF A");
+		group.allocate(6);
+		assertFalse(group.isAllocated());
+		assertFalse(group.evaluationDone());
+		assertTrue(group.getAcceptableProducts().size() == 0);
+		assertTrue(group.getNotAcceptableProducts().size() == 0);
+	}
+	
+	@Test
+	public void test6() {
+		EvaluationGroup group = database.getEvaluationGroup("SPF B");
+		assertTrue(group.isAllocated());
+		assertTrue(group.evaluationDone());
+	}
+	
+	@Test
+	public void test7() {
+		EvaluationGroup group = database.getEvaluationGroup("SPF C");
+		assertTrue(group.isAllocated());
+		assertFalse(group.evaluationDone());
+	}
+	
+	@Test
+	public void test8() {
+		EvaluationGroup group = database.getEvaluationGroup("SPF B");
+		group.addMember(null);
+		assertTrue(group.isAllocated());
+		assertTrue(group.evaluationDone());
+		
+		assertTrue(group.getAcceptableProducts().size() > 0);
+		assertTrue(group.getNotAcceptableProducts().size() > 0);
 		
 	}
+	
+	@Test
+	public void test9() {
+		EvaluationGroup group = database.getEvaluationGroup("SPF B");
+		group.addMember(new User(0,null,null,null));
+		assertTrue(group.isAllocated());
+		assertTrue(group.evaluationDone());
+		
+		assertTrue(group.getAcceptableProducts().size() > 0);
+		assertTrue(group.getNotAcceptableProducts().size() > 0);
+		
+	}
+	
+	
 	
 	
 	

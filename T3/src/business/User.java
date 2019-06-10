@@ -135,7 +135,13 @@ public class User{
 	}
 	
 	public void setName(String name) throws IllegalArgumentException{
+		if(name == null) {
+			return;
+		}
+		
 		Pattern regex = Pattern.compile(NamePattern);
+		
+		
 		Matcher matcher = regex.matcher(name);
 		
 		if(matcher.find()) {
@@ -145,6 +151,8 @@ public class User{
 		else {
 			throw new IllegalArgumentException("Nome inválido");
 		}
+		
+		
 		
 		
 		
@@ -159,6 +167,10 @@ public class User{
 	 * Lança IllegalArgumentException se o estado informado não corresponder a uma sigla válida de estado brasileiro
 	 * */
 	public void setStateOfResidence(String StateOfResidence) throws IllegalArgumentException{
+		if(StateOfResidence == null) {
+			return;
+		}
+		
 		if(BrazilianStates.contains(StateOfResidence.toUpperCase())) {
 			this.StateOfResidence = StateOfResidence.toUpperCase();	
 		}

@@ -47,23 +47,25 @@ public class EvaluationGroup {
 	
 	public boolean evaluationDone() {
 		for(List<Evaluation> EvaluationList : evaluations.values()) {
+				if(EvaluationList == null) {
+					return false;
+				}
+			
 				for(Evaluation evaluation : EvaluationList) {
 					
-					if(!evaluation.isDone()) {
+					if(evaluation ==  null || !evaluation.isDone()) {
 							return false;}
 				
 			}
 		}
-		System.out.println("Group has " + evaluations.keySet().size() + " evaluations");
 		return true;
 	}
 	
 	
 	public void allocate (int numMembers) {
-		if(isAllocated() == true) return;
-		System.out.println("Sorted by id\n");
-		System.out.println(IOUtils.printSimpleProductList(getOrderedProducts()));
-		System.out.println("\n______________________ " +  getOrderedProducts().size());
+		if(isAllocated() == true || numMembers < User.MinNumberOfEvaluatorsToAllocate || numMembers > User.MaxNumberOfEvaluatorsToAllocate) {
+				return;
+		}
 		
 		System.out.println("\nIniciando Alocação\n");
 		
@@ -82,7 +84,8 @@ public class EvaluationGroup {
 				} 
 				
 				
-				catch (NullPointerException e) {
+				catch (IndexOutOfBoundsException e) {
+					System.out.println(String.format("\nNenhum candidato adequado disponível para ser o %2d° avaliador de Produto ID[%2d]",i,ProductAllocate.getProductID()));
 
 				}
 				
@@ -159,7 +162,9 @@ public class EvaluationGroup {
 		for(Product CurrentProduct : evaluations.keySet()){
 			Double AverageScore = CurrentProduct.getAverageScore();
 			
-			if((acceptableProducts && Product.isAverageScoreAcceptable(AverageScore)) || (!acceptableProducts && !Product.isAverageScoreAcceptable(AverageScore)) ){
+			
+			
+			if( AverageScore != null && ((acceptableProducts && Product.isAverageScoreAcceptable(AverageScore)) || (!acceptableProducts && !Product.isAverageScoreAcceptable(AverageScore))) ){
 				ProductAverageScoreMap.put(CurrentProduct, AverageScore);
 			}
 		}
