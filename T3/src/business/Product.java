@@ -184,7 +184,7 @@ public class Product implements Comparable<Product>{
 	}
 	
 	public Boolean isAcceptable() {
-		return true;
+		return Product.isAverageScoreAcceptable(getAverageScore());
 		
 	}
 	

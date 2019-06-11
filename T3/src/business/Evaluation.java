@@ -18,6 +18,18 @@ public class Evaluation {
 		setScore(NewScore);
 	}
 	
+	public Evaluation(Product product, User evaluator) {
+		setProduct(product);
+		setEvaluator(evaluator);
+		score = null;
+		
+		
+		if(product != null) product.addEvaluation(this);
+	
+		if(evaluator != null) evaluator.addEvaluation(this);
+	}
+	
+	
 	public Evaluation(EvaluationGroup group, Product product, User evaluator) {
 		setGroup(group);
 		setProduct(product);
@@ -26,19 +38,21 @@ public class Evaluation {
 		
 		
 		if(product != null) product.addEvaluation(this);
-		
+	
 		if(evaluator != null) evaluator.addEvaluation(this);
 	}
 	
-	public Evaluation(EvaluationGroup group, Product product, User evaluator,Integer NewScore) {
+	public Evaluation(EvaluationGroup group, Product product, User evaluator,Integer NewScore) throws IllegalArgumentException{
 		setGroup(group);
 		setProduct(product);
 		setEvaluator(evaluator);
 		setScore(NewScore);
 		
-		product.addEvaluation(this);
-		evaluator.addEvaluation(this);
-		group.addEvaluation(product, this);
+		if(product != null) product.addEvaluation(this);
+		
+		if(evaluator != null) evaluator.addEvaluation(this);
+		
+		if(group != null) group.addEvaluation(product, this);
 		
 	}
 	

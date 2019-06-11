@@ -16,9 +16,13 @@ public class EvaluationSelectionCommand extends Command{
 	public void execute() {
 		System.out.println("\n" + super.name);
 		
+		
+		
 		List<EvaluationGroup> EvaluationGroupList = super.database.getAllEvaluationGroups();
-		String EvaluationGroupListFormatted = IOUtils.printEvaluationGroupList(EvaluationGroupList);
+		String EvaluationGroupListFormatted = IOUtils.generateEvaluationGroupList(EvaluationGroupList);
 		System.out.println(EvaluationGroupListFormatted);
+		
+		
 		
 		int EvaluationGroupIndex = IOUtils.readInteger("Selecione o grupo de avaliação", 0, EvaluationGroupList.size()-1, EvaluationGroupListFormatted);
 		EvaluationGroup SelectedEvaluationGroup = EvaluationGroupList.get(EvaluationGroupIndex);

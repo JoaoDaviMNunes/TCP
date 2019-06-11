@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import ui.IOUtils;
 
@@ -25,6 +26,8 @@ public class EvaluationGroup {
 	
 	
 	public static final int NameWidth = 10;
+	
+	public EvaluationGroup() {}
 	
 	
 	public EvaluationGroup(String name) {
@@ -48,18 +51,18 @@ public class EvaluationGroup {
 	
 	
 	public boolean evaluationDone() {
-		for(List<Evaluation> EvaluationList : evaluations.values()) {
-				if(EvaluationList == null) {
-					return false;
-				}
-			
+		if(evaluations.values() == null || evaluations.containsValue(null)) return false;
+		
+		
+		for(List<Evaluation> EvaluationList : evaluations.values()) {	
 				for(Evaluation evaluation : EvaluationList) {
 					
-					if(evaluation ==  null || !evaluation.isDone()) {
-							return false;}
+					if(evaluation ==  null || !evaluation.isDone()) return false;
 				
 			}
 		}
+		
+		
 		return true;
 	}
 	
@@ -112,30 +115,6 @@ public class EvaluationGroup {
 	}
 	
 	/**
-	 * Função auxiliar para inicialização do Database. Associa produtos ao grupo e aloca avaliações a ele.
-	 * */
-	public void addEvaluation(Product EvaluatedProduct, Evaluation ExistingEvaluation) throws IllegalArgumentException{
-		
-		if(EvaluatedProduct == null || ExistingEvaluation == null) {
-			throw new IllegalArgumentException("\nProduto:" + EvaluatedProduct + "\nAvaliação:" + ExistingEvaluation);
-		}
-		
-		
-		List<Evaluation> CurrentEvaluations = evaluations.get(EvaluatedProduct);
-		
-		try {
-			CurrentEvaluations.add(ExistingEvaluation);
-			evaluations.put(EvaluatedProduct, CurrentEvaluations);
-		}
-		
-		catch(NullPointerException e) {
-			evaluations.put(EvaluatedProduct, new ArrayList<Evaluation>(Arrays.asList(ExistingEvaluation)));
-		}
-		
-	}
-	
-	
-	/**
 	 * Função auxiliar para inicialização do Database. Associa produtos com o grupo sem que haja avaliações alocadas a ele.
 	 * */
 	public void AddUnallocatedProduct(Product product) throws IllegalArgumentException{
@@ -146,6 +125,43 @@ public class EvaluationGroup {
 		evaluations.put(product,null);
 	}
 	
+	/**
+	 * Função auxiliar para inicialização do Database. Associa produtos ao grupo e aloca avaliações a ele.
+	 * */
+	public void addEvaluation(Product EvaluatedProduct, Evaluation ExistingEvaluation) throws IllegalArgumentException{
+		
+		if(EvaluatedProduct == null || ExistingEvaluation == null) {
+			throw new IllegalArgumentException("\nProduto:" + EvaluatedProduct + "\nAvaliação:" + ExistingEvaluation);
+		}
+		
+		addEvaluation(evaluations.get(EvaluatedProduct), EvaluatedProduct, ExistingEvaluation);
+		
+	}
+	
+	private void addEvaluation(List<Evaluation> CurrentEvaluations, Product EvaluatedProduct, Evaluation EvaluationToAdd ){
+		
+		
+		
+		try {
+			CurrentEvaluations = evaluations.get(EvaluatedProduct);
+			CurrentEvaluations.add(EvaluationToAdd);
+			evaluations.put(EvaluatedProduct, CurrentEvaluations);
+		}
+		
+		catch(NullPointerException e) {
+			evaluations.put(EvaluatedProduct, new ArrayList<Evaluation>(Arrays.asList(EvaluationToAdd)));
+		}
+		
+		
+		
+		
+	}
+
+		
+	
+	
+	
+	
 	
 	/**
 	 * Cria avaliação a partir dos argumentos fornecidos e adiciona ao grupo {@throws IllegalArgumentException} se o produto ou avaliador recebido forem nulos
@@ -154,19 +170,9 @@ public class EvaluationGroup {
 		if(EvaluatedProduct == null ||  evaluator == null) {
 			throw new IllegalArgumentException("\nProduto:" + EvaluatedProduct + "\nAvaliador:" + evaluator );
 		}
-		
-		Evaluation evaluation = new Evaluation(this,EvaluatedProduct,evaluator);
-
-		try {
 			
-			List<Evaluation> CurrentEvaluations = evaluations.get(EvaluatedProduct);
-			CurrentEvaluations.add(evaluation);
-			evaluations.put(EvaluatedProduct, CurrentEvaluations);
-		}
+		addEvaluation(evaluations.get(EvaluatedProduct),EvaluatedProduct,new Evaluation(this,EvaluatedProduct,evaluator));
 		
-		catch(NullPointerException e) {
-			evaluations.put(EvaluatedProduct, new ArrayList<Evaluation>(Arrays.asList(evaluation)));
-		}
 	}
 	
 	private List<Product> getOrderedProducts(){

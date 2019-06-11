@@ -19,6 +19,12 @@ public class IOUtils {
 	public static Integer readInteger(String message, int min, int max, String RepeatMessage) {
 		Integer InputValue = null;
 		
+		if(min > max) {
+			System.out.println("Limite inferior maior que superior");
+			return null;
+		}
+		
+		
 		while(InputValue == null || InputValue.intValue() < min || InputValue.intValue() > max) {
 			System.out.println(String.format("%s [%d a %d]: ", message, min,max));
 			try {
@@ -69,7 +75,14 @@ public class IOUtils {
 	
 	
 	//OUTPUT METHODS
-	public static String printEvaluationGroupList(List <EvaluationGroup> EvaluationGroupList) {
+	public static void printEvaluationGroups(List<EvaluationGroup> EvaluationGroups) {
+		
+		String EvaluationGroupListFormatted = IOUtils.generateEvaluationGroupList(EvaluationGroups);
+		System.out.println(EvaluationGroupListFormatted);
+	}
+	
+	
+	public static String generateEvaluationGroupList(List <EvaluationGroup> EvaluationGroupList) {
 		String buffer = "";
 		
 		int index = 0;

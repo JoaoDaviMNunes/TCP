@@ -94,16 +94,6 @@ public class User{
 			
 		}
 		
-		/*
-		System.out.println("\n");
-		System.out.println("\n" +EvaluationProductCategory );
-		System.out.println("\n" +this.InterestCategories);
-		
-		System.out.println(UserHasNotAlreadyEvaluatedProduct);
-		System.out.println(UserIsNotSolicitor);
-		System.out.println(UserLivesDifferenteStateThanSolicitor);
-		System.out.println(UserInterestCategoriesMatchProducts);
-		*/
 		
 		return(UserIsNotSolicitor && UserHasNotAlreadyEvaluatedProduct && UserLivesDifferenteStateThanSolicitor 
 				&& UserInterestCategoriesMatchProducts);
