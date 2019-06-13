@@ -35,7 +35,7 @@ public class UserTest {
 	}
 	
 	@Test
-	public void canEvaluate1() {
+	public void canEvaluateWellBehavedCase1() {
 		evaluator = new User(5,"MARIA","SP",Arrays.asList(category));
 		solicitor = new User(2, "RICARDO","PE",Arrays.asList(category));
 		product = new Product(6,solicitor,"COBOLSOAP",category);
@@ -47,7 +47,7 @@ public class UserTest {
 	}
 	
 	@Test
-	public void canEvaluate2() {
+	public void canEvaluateWellBehavedCase2() {
 		evaluator = new User(5,"MARIA","SP",new ArrayList<>(Arrays.asList(category)));
 		solicitor = new User(2, "RICARDO","SP",new ArrayList<>(Arrays.asList(category)));
 		product = new Product(6,solicitor,"COBOLSOAP",category);
@@ -56,13 +56,10 @@ public class UserTest {
 	}
 	
 	@Test
-	public void canEvaluate3() {
+	public void canEvaluateAfterCategoryAddition() {
 		evaluator = new User(5,"MARIA","SP",new ArrayList<>(Arrays.asList(category)));
 		solicitor = new User(2, "RICARDO","RS",new ArrayList<>(Arrays.asList(category)));
 		product = new Product(6,solicitor,"COBOLSOAP",OtherCategory);
-		
-		
-		assertFalse(evaluator.canEvaluate(product));
 		
 		evaluator.addCategory(OtherCategory);
 		
@@ -70,7 +67,7 @@ public class UserTest {
 	}
 	
 	@Test
-	public void canEvaluate4() {
+	public void canEvaluateEvaluatorIsSolicitor() {
 		evaluator = new User(5,"MARIA","SP",new ArrayList<>(Arrays.asList(category)));
 		product = new Product(6,evaluator,"COBOLSOAP",category);
 		
@@ -78,7 +75,7 @@ public class UserTest {
 	}
 	
 	@Test
-	public void canEvaluate5() {
+	public void canEvaluateBeforeAndAfterEvaluating() {
 		evaluator = new User(5,"MARIA","SP",new ArrayList<>(Arrays.asList(category)));
 		solicitor = new User(2, "RICARDO","RS",new ArrayList<>(Arrays.asList(category)));
 		product = new Product(6,solicitor,"COBOLSOAP",category);
@@ -91,6 +88,40 @@ public class UserTest {
 		Evaluation evaluation = new Evaluation(group,product,evaluator);
 		assertFalse(evaluator.canEvaluate(product));
 		assertEquals(evaluator.getEvaluationCount(group),1);
+	}
+	
+	@Test
+	public void canEvaluateNullProduct() {
+		evaluator = new User(5,"MARIA","SP",new ArrayList<>(Arrays.asList(category)));
+		
+		assertFalse(evaluator.canEvaluate(null));
+	}
+	
+	@Test
+	public void canEvaluateWithNullInterestCategories() {
+		evaluator = new User(5,"MARIA","SP",null);
+		solicitor = new User(2, "RICARDO","RS",new ArrayList<>(Arrays.asList(category)));
+		product = new Product(6,solicitor,"COBOLSOAP",category);
+		
+		assertFalse(evaluator.canEvaluate(product));
+	}
+	
+	@Test
+	public void canEvaluateWithEmptyEvaluator() {
+		evaluator = new User(5,null,null,null);
+		solicitor = new User(2, "RICARDO","RS",new ArrayList<>(Arrays.asList(category)));
+		product = new Product(6,solicitor,"COBOLSOAP",category);
+		
+		assertFalse(evaluator.canEvaluate(product));
+	}
+	
+	@Test
+	public void canEvaluateWithNullSolicitor() {
+		evaluator = new User(5,"MARIA","SP",new ArrayList<>(Arrays.asList(category)));
+		solicitor = null;
+		product = new Product(6,solicitor,"COBOLSOAP",category);
+		
+		assertFalse(evaluator.canEvaluate(product));
 	}
 		
 	

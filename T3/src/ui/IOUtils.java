@@ -110,35 +110,65 @@ public class IOUtils {
 		String buffer = "";
 		
 		int index = 0;
+		int ExtraWidth = 0;
 		
-		buffer = buffer.concat(generateDivisoryLine());
-		buffer = buffer.concat(String.format("\n|No |%-" + Product.ProductNameWidth+ "s  | %-" + Product.IDWidth + "s |  %-" + Product.CategoryNameWidth + "s | %-" + Product.IDWidth + "s |", "Nome Produto","ID Produto","Categoria","ID Solicitador"));
+		if(detailed) ExtraWidth = Product.AverageScoreWidth;
+		
+		
+	
+		
+		buffer = buffer.concat(generateDivisoryLine(ExtraWidth));
+		
+		
+		String ProductNameColumn = String.format("%-" + Product.ProductNameWidth+ "s", "Nome Produto");
+		String ProductIDColumn = String.format("%-" + + Product.IDWidth + "s" , "ID Produto");
+		String ProductCategoryColumn = String.format("%-" + + Product.CategoryNameWidth  + "s" , "Categoria");
+		String SolicitorIDColumn = String.format("%-" + + Product.IDWidth + "s" , "ID Solicitador");
+		
+		buffer = buffer.concat(String.format("\n|No | %s | %s |  %s | %s |", ProductNameColumn,ProductIDColumn,ProductCategoryColumn,SolicitorIDColumn));
 
+	
 		
+		if(detailed) {
+			buffer = buffer.concat(String.format("%-" + Product.AverageScoreWidth + "s|" ,"Nota media"));
+			
+		}
 		
-		buffer = buffer.concat(generateDivisoryLine());
+		buffer = buffer.concat(generateDivisoryLine(ExtraWidth));
 		
 		
 		
 		for(Product ProductPrint : ProductList) {
 			
 			buffer = buffer.concat(String.format("\n| %-2d|%s",index++,ProductPrint.toString(detailed)));
-			buffer = buffer.concat(generateDivisoryLine());
+			buffer = buffer.concat(generateDivisoryLine(ExtraWidth));
 		}
 		
 		return buffer;
 		
 	}
 	
-	public static String generateDivisoryLine() {
+	private static String generateDivisoryLine(int ExtraWidth) {
 		String buffer = "\n";
-		int TotalWidth = 17 + Product.ProductNameWidth + Product.CategoryNameWidth + Product.IDWidth*2;
+		final int ColumnsDivisoriesWdith = 17;
+		int TotalWidth = ExtraWidth + ColumnsDivisoriesWdith + Product.ProductNameWidth + Product.CategoryNameWidth + Product.IDWidth*2;
 		
-		for(int i=0;i<TotalWidth;i++) {
+		for(int i=0;i<=TotalWidth;i++) {
 			buffer = buffer.concat("_");
 		}
 		
 		return buffer;
+	}
+	
+	public static String generateDivisoryLine() {
+		return generateDivisoryLine(0);
+		
+	}
+	
+	public static void printMessageWithDivisoryLines(String message) {
+		System.out.println(IOUtils.generateDivisoryLine());
+		System.out.println(message);
+		System.out.println(IOUtils.generateDivisoryLine());
 		
 	}
 	

@@ -35,6 +35,23 @@ public class ProductCategory {
 	
 	}
 	
+	public boolean isInside(List<ProductCategory> categories) {
+		if(categories == null) return false;
+		
+		
+		for(ProductCategory category : categories) {
+			if(category.getName().contentEquals(this.getName())){
+				return true;
+			}
+			
+		}
+		
+		return false;
+		
+		
+		
+	}
+	
 	@Override
 	public String toString() {
 		return getName();

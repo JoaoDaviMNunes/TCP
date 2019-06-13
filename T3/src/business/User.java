@@ -77,26 +77,28 @@ public class User{
 	
 	
 	public boolean canEvaluate(Product EvaluationProduct) {
-		User solicitor = EvaluationProduct.getSolicitor();
-		ProductCategory EvaluationProductCategory = EvaluationProduct.getProductCategory();
 		
-		
-		boolean UserHasNotAlreadyEvaluatedProduct = EvaluationProduct.getEvaluation(this) == null;
-		boolean UserIsNotSolicitor = solicitor.getID() != this.id;
-		boolean UserLivesDifferenteStateThanSolicitor = !this.StateOfResidence.contentEquals(solicitor.StateOfResidence);
-		
-		
-		boolean UserInterestCategoriesMatchProducts = false;
-		for(ProductCategory category : this.InterestCategories) {
-			if(category.getName().contentEquals(EvaluationProductCategory.getName())){
-				UserInterestCategoriesMatchProducts = true;
-			}
+		try {
+			User solicitor = EvaluationProduct.getSolicitor();
+			ProductCategory EvaluationProductCategory = EvaluationProduct.getProductCategory();
+			
+			
+			boolean UserHasNotAlreadyEvaluatedProduct = EvaluationProduct.getEvaluation(this) == null;
+			boolean UserIsNotSolicitor = solicitor.getID() != this.id;
+			boolean UserLivesDifferenteStateThanSolicitor = !this.StateOfResidence.contentEquals(solicitor.StateOfResidence);
+			boolean UserInterestCategoriesMatchProducts = EvaluationProductCategory.isInside(InterestCategories);
+			
+			return(UserIsNotSolicitor && UserHasNotAlreadyEvaluatedProduct && UserLivesDifferenteStateThanSolicitor 
+					&& UserInterestCategoriesMatchProducts);
 			
 		}
 		
+		catch(NullPointerException e) {
+			return false;
+		}
 		
-		return(UserIsNotSolicitor && UserHasNotAlreadyEvaluatedProduct && UserLivesDifferenteStateThanSolicitor 
-				&& UserInterestCategoriesMatchProducts);
+		
+		
 		
 	
 	}
@@ -113,6 +115,12 @@ public class User{
 		catch (NullPointerException e) {
 			return 0;
 		}
+		
+	}
+	
+	protected static boolean isWithinAllocationRange(int numMembers) {
+		
+		return(numMembers <= MaxNumberOfEvaluatorsToAllocate && numMembers >= MinNumberOfEvaluatorsToAllocate);
 		
 	}
 	

@@ -57,30 +57,33 @@ public class EvaluationGroup {
 		for(List<Evaluation> EvaluationList : evaluations.values()) {	
 				for(Evaluation evaluation : EvaluationList) {
 					
-					if(evaluation ==  null || !evaluation.isDone()) return false;
+					if(evaluation ==  null || evaluation.isDone() == false) return false;
 				
 			}
 		}
 		
 		
 		return true;
+		
+		
 	}
 	
 	
 	public void allocate (int numMembers) {
-		if(isAllocated() == true || numMembers < User.MinNumberOfEvaluatorsToAllocate || numMembers > User.MaxNumberOfEvaluatorsToAllocate) {
-			
+		if(isAllocated() || User.isWithinAllocationRange(numMembers) == false) {
+				
+				if(isAllocated()) System.out.println("Grupo já alocado");
+				
+				else System.out.println("Número de avaliadores fora do intervado");
 				
 				return;
 		}
 		
-		System.out.println(IOUtils.generateDivisoryLine());
-		System.out.println("Iniciando Alocação");
-		System.out.println(IOUtils.generateDivisoryLine());
+		IOUtils.printMessageWithDivisoryLines("Iniciando Alocação");
 		
 		int LogCount = 0;
 		
-		for(int i = 0; i < numMembers;i++) {
+		for(int i = 1; i <= numMembers;i++) {
 			for(Product ProductAllocate : getOrderedProducts()) {
 				
 				
@@ -103,10 +106,7 @@ public class EvaluationGroup {
 				
 			}
 		}
-		
-		System.out.println(IOUtils.generateDivisoryLine());
-		System.out.println("\nFim da Alocação");
-		System.out.println(IOUtils.generateDivisoryLine());
+		IOUtils.printMessageWithDivisoryLines("\nFim da Alocação");
 		
 		
 		
@@ -194,11 +194,17 @@ public class EvaluationGroup {
 		for(Product CurrentProduct : evaluations.keySet()){
 			Double AverageScore = CurrentProduct.getAverageScore();
 			
-			
-			
-			if( AverageScore != null && ((acceptableProducts && Product.isAverageScoreAcceptable(AverageScore)) || (!acceptableProducts && !Product.isAverageScoreAcceptable(AverageScore))) ){
-				ProductAverageScoreMap.put(CurrentProduct, AverageScore);
+			if(AverageScore != null) {
+				final boolean AddAcceptableProduct = acceptableProducts && Product.isAverageScoreAcceptable(AverageScore);
+				final boolean AddNotAcceptableProduct = acceptableProducts == false && Product.isAverageScoreAcceptable(AverageScore) == false;
+				
+				if(AddAcceptableProduct || AddNotAcceptableProduct) {
+					ProductAverageScoreMap.put(CurrentProduct, AverageScore);
+				}
 			}
+			
+			
+			
 		}
 		return ProductAverageScoreMap;
 		

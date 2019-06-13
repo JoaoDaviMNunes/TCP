@@ -16,6 +16,7 @@ public class Product implements Comparable<Product>{
 	public static final int ProductNameWidth = 30;
 	public static final int CategoryNameWidth = 20;
 	public static final int IDWidth = 16;
+	public static final int AverageScoreWidth = 14;
 	
 	
 	private Integer id;
@@ -228,9 +229,7 @@ public class Product implements Comparable<Product>{
 		buffer = buffer.concat(this.toString());
 		
 		if(verbose) {
-			for(Map.Entry <User,Evaluation> entry: evaluations.entrySet()) {
-				buffer = buffer.concat(String.format("\n Evaluator %s | Score : %d", entry.getKey().getName(), entry.getValue().getScore()));
-			}
+			buffer = buffer.concat(String.format("%-" + AverageScoreWidth + ".2f|",getAverageScore()));
 			
 		}
 		
