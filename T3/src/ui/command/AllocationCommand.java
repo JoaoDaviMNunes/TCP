@@ -1,5 +1,8 @@
 package ui.command;
 
+import java.util.List;
+
+import business.EvaluationGroup;
 import business.User;
 import data.Database;
 import ui.IOUtils;
@@ -13,10 +16,21 @@ public class AllocationCommand extends Command {
 	public void execute() {
 		System.out.println("\n" + super.name);
 		
-		String EvaluationGroupName = IOUtils.readString("\nInforme nome do grupo a ser alocado: ");
+		List<EvaluationGroup> EvaluationGroupList = super.database.getAllEvaluationGroups();
+		String EvaluationGroupListFormatted = IOUtils.generateEvaluationGroupList(EvaluationGroupList);
+		System.out.println(EvaluationGroupListFormatted);
+		
+		
+		
+		int EvaluationGroupIndex = IOUtils.readInteger("Selecione o grupo de avaliação", 0, EvaluationGroupList.size()-1, EvaluationGroupListFormatted);
+		EvaluationGroup AllocatedEvaluationGroup = EvaluationGroupList.get(EvaluationGroupIndex);
+		
+		
+		
+		
 		int numMembers = IOUtils.readInteger("Informe número de avaliador por produto", User.MinNumberOfEvaluatorsToAllocate, User.MaxNumberOfEvaluatorsToAllocate, null);
 		
-		super.database.getEvaluationGroup( EvaluationGroupName).allocate(numMembers);
+		AllocatedEvaluationGroup.allocate(numMembers);
 		
 	}
 	

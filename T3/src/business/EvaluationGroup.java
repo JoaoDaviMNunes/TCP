@@ -79,7 +79,8 @@ public class EvaluationGroup {
 				return;
 		}
 		
-		IOUtils.printMessageWithDivisoryLines("Iniciando Alocação");
+		IOUtils.printMessageWithDivisoryLines("\nIniciando Alocação");
+		System.out.println();
 		
 		int LogCount = 0;
 		

@@ -86,12 +86,20 @@ public class IOUtils {
 		String buffer = "";
 		
 		int index = 0;
-		buffer = buffer.concat(String.format("\n   %-" + EvaluationGroup.NameWidth + "s\n", "Nome do grupo"));
+		
+		buffer = buffer.concat(generateDivisoryLine());
+		
+		buffer = buffer.concat(String.format("\n| No | %-" + EvaluationGroup.NameWidth + "s", "Nome do grupo"));
+		
+		buffer = buffer.concat(generateDivisoryLine());
+		
 		
 		for(EvaluationGroup PrintGroup : EvaluationGroupList) {
-			buffer = buffer.concat(String.format("\n%2d.%s", index++,PrintGroup.toString()));
+			buffer = buffer.concat(String.format("\n|%2d  |%s", index++,PrintGroup.toString()));
 		}
 		
+		
+		buffer = buffer.concat(generateDivisoryLine());
 		return buffer;
 	}
 	
@@ -173,7 +181,7 @@ public class IOUtils {
 	}
 	
 	public static String printEvaluatorList(List<User> Evaluators) {
-		String buffer = "";
+		String buffer = "\n";
 		
 		int index = 0;
 		buffer = buffer.concat(generateDivisoryLine());
