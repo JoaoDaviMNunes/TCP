@@ -173,7 +173,7 @@ public class Database {
 
 
 	private void populateProducts() {
-		int ProductID=0;
+		int ProductID=1;
 		
 		for(DatabaseProduct product : DatabaseProductList) {
 					
@@ -182,7 +182,7 @@ public class Database {
 					String ProductName = product.ProductName;
 					ProductCategory category = ProductCategoriesNameMap.get(product.CategoryName);
 					
-					products.put( ProductID+1, new Product( ProductID+1, solicitor,  ProductName, category, group));
+					products.put( ProductID, new Product( ProductID, solicitor,  ProductName, category, group));
 					
 					ProductID++;
 				}
@@ -264,7 +264,9 @@ class DatabaseEvaluation{
 	
 	
 }
-
+/**
+ * Classe para inicializar os grupos do Database
+ * */
 class DatabaseEvaluationGroup{
 	String GroupName;
 	List<Integer> EvaluatorIDList;

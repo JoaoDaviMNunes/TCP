@@ -75,7 +75,10 @@ public class User{
 	
 	
 	
-	
+	/**
+	 * Avaliador está autorizado a avaliar se ele não for o solicitador, viver em estado diferente do avaliador, ter a categoria do produto entre suas categorias
+	 * de interesse e não tiver já avaliado o produto
+	 * */
 	public boolean canEvaluate(Product EvaluationProduct) {
 		
 		try {

@@ -13,6 +13,7 @@ public class Product implements Comparable<Product>{
 	public static final BigDecimal ScoreDivider = new BigDecimal(ScoreDividerStringValue).setScale(BigDecimalScale);
 	
 	
+	
 	public static final int ProductNameWidth = 30;
 	public static final int CategoryNameWidth = 20;
 	public static final int IDWidth = 16;
@@ -131,6 +132,10 @@ public class Product implements Comparable<Product>{
 		return true;
 	}
 	
+	/**
+	 * Retorna a nota média de todas as avaliações do produto. 
+	 * <p>Se uma ou mais não tiver com nota definida, retorna nulo
+	 * */
 	public Double getAverageScore() {
 		Number sum = new Double(0.0);
 		List<Evaluation> SumEvaluations= new ArrayList<Evaluation>( evaluations.values());
