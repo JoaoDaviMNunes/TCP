@@ -34,6 +34,7 @@ public class UserTest {
 		evaluator = new User(5,"DAMIÃO GÜNNER","SP");
 	}
 	
+	
 	@Test
 	public void canEvaluateWellBehavedCase1() {
 		evaluator = new User(5,"MARIA","SP",Arrays.asList(category));

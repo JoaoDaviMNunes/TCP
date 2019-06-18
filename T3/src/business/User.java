@@ -78,6 +78,9 @@ public class User{
 	/**
 	 * Avaliador está autorizado a avaliar se ele não for o solicitador, viver em estado diferente do avaliador, ter a categoria do produto entre suas categorias
 	 * de interesse e não tiver já avaliado o produto
+	 * 
+	 * <P> Produto ou categorias de interesse nulo retornam falso
+	 * 
 	 * */
 	public boolean canEvaluate(Product EvaluationProduct) {
 		
@@ -121,6 +124,9 @@ public class User{
 		
 	}
 	
+	/**
+	 * Informa se o numMembers está no intervalo permitido para alocação de grupo
+	 * */
 	protected static boolean isWithinAllocationRange(int numMembers) {
 		
 		return(numMembers <= MaxNumberOfEvaluatorsToAllocate && numMembers >= MinNumberOfEvaluatorsToAllocate);
@@ -154,6 +160,7 @@ public class User{
 		
 		
 		Matcher matcher = regex.matcher(name);
+		
 		
 		if(matcher.find()) {
 			this.name = name;
