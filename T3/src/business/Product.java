@@ -92,8 +92,6 @@ public class Product implements Comparable<Product>{
 	public void addEvaluation(Evaluation productEvaluation) {
 		evaluations.put(productEvaluation.getEvaluator() ,productEvaluation);
 		
-		//this.group.addEvaluation(this,productEvaluation);
-		
 	}
 	
 	

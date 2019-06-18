@@ -47,8 +47,6 @@ public class ProductTest {
 		assertFalse(product.evaluationDone());
 		
 		product.addScore(evaluator, 2);
-		product.addScore(evaluator, 2);
-		
 		assertEquals(product.getAverageScore(), new Double(2.00));
 		assertTrue(product.isAcceptable());
 		
@@ -84,6 +82,8 @@ public class ProductTest {
 		
 		assertTrue(ExpectedAverage.compareTo(CalculatedAverage) == 0);
 		assertTrue(product.evaluationDone());
+		
+		
 		
 	}
 	

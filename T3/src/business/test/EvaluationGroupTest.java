@@ -37,6 +37,7 @@ public class EvaluationGroupTest {
 			
 			
 			for(User user : evaluators) {
+				groupA.addMember(user);
 				Product ProductToAdd = new Product(i+3,user,"PRODUTO" + i);
 				Evaluation EvaluationToAdd;
 				
@@ -62,13 +63,34 @@ public class EvaluationGroupTest {
 	}
 
 	@Test
-	public void randomGroupTest() {
+	public void randomGroupWithAllocatedProductsTest() {
 		groupA.getAcceptableProducts();
 		groupA.getNotAcceptableProducts();
 		
 		assertTrue(groupA.getAcceptableProducts().size() > 0);
 		assertTrue(groupA.getNotAcceptableProducts().size() > 0);
 	}
+	
+	@Test
+	public void reallocateRandomGroup() {
+		groupA.allocate(3);
+		assertTrue(groupA.evaluationDone());
+	}
+	
+	@Test
+	public void AllocatedGroupWithEmptyEvaluators() {
+		for(int id=1;id<10;id++) {
+			groupA.addMember(new User (id,null,null,null));
+			
+		}
+		
+		
+		groupA.allocate(2);
+		
+		
+	}
+	
+	
 	
 	@Test
 	public void allocationLowerBoundTest() {
@@ -89,7 +111,7 @@ public class EvaluationGroupTest {
 	}
 	
 	@Test
-	public void allocationHigherBoundTest() {
+	public void allocationUpperBoundTest() {
 		EvaluationGroup group = database.getEvaluationGroup("SPF A");
 		group.allocate(5);
 		assertTrue(group.isAllocated());
@@ -173,6 +195,20 @@ public class EvaluationGroupTest {
 		
 	}
 	
+	@Test
+	public void addEvaluationTest1() {
+		EvaluationGroup group = database.getEvaluationGroup("SPF B");
+		group.addEvaluation(new Product(),new User());
+		
+	}
+	
+	@Test
+	public void addEvaluationTest2() {
+		EvaluationGroup group = database.getEvaluationGroup("SPF B");
+		group.addEvaluation(new Product(),new Evaluation());
+		
+	}
+	
 	@Test (expected = IllegalArgumentException.class)
 	public void addUnallocatedProductArgumentException() {
 		EvaluationGroup group = database.getEvaluationGroup("SPF B");
@@ -180,6 +216,9 @@ public class EvaluationGroupTest {
 		group.AddUnallocatedProduct(null);
 		
 	}
+	
+	
+	
 	
 	
 	

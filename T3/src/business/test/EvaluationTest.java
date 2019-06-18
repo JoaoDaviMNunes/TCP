@@ -21,7 +21,7 @@ public class EvaluationTest {
 	
 	
 	@Test
-	public void test1() {
+	public void scoreUpperBoundTest() {
 		evaluation = new Evaluation();
 		evaluation.setScore(Evaluation.maxScore);
 		assertEquals(evaluation.getScore().intValue(),Evaluation.maxScore);
@@ -29,7 +29,7 @@ public class EvaluationTest {
 	}
 	
 	@Test
-	public void test2() {
+	public void scoreLowerBoundTest() {
 		evaluation = new Evaluation();
 		evaluation.setScore(evaluation.minScore);
 		assertEquals(evaluation.getScore().intValue(),Evaluation.minScore);
@@ -37,27 +37,27 @@ public class EvaluationTest {
 	
 	}
 	@Test
-	public void test3() {
+	public void evaluationIsDone1() {
 		evaluation = new Evaluation();
 		assertFalse(evaluation.isDone());
 		
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
-	public void test4() {
+	public void invalidScoreLowerThanMinimum() {
 			evaluation = new Evaluation();
 			evaluation.setScore(-5);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
-	public void test5() {
+	public void invalidScoreHigherThanMaximum() {
 			evaluation = new Evaluation();
 			evaluation.setScore(10);
 
 	}
 	
 	@Test
-	public void test6() {
+	public void wellBehavedCaseTest1() {
 		User user = new User(1,"MARIA","RJ",null);
 		EvaluationGroup group = database.getEvaluationGroup("SPF B");
 		Product product = new Product(5,user, "PRODUTO0",null,group);
@@ -68,7 +68,7 @@ public class EvaluationTest {
 	}
 
 	@Test
-	public void test7() {
+	public void  evaluationWithNullUserTest() {
 		User user = new User(1,"MARIA","RJ",null);
 		EvaluationGroup group = database.getEvaluationGroup("SPF B");
 		Product product = new Product(5,user, "PRODUTO0",null,group);
@@ -79,7 +79,7 @@ public class EvaluationTest {
 	}
 
 	@Test
-	public void test8() {
+	public void evaluationWithNullGroup() {
 		User user = new User(1,"MARIA","RJ",null);
 		EvaluationGroup group = database.getEvaluationGroup("SPF B");
 		Product product = new Product(5,user, "PRODUTO0",null,group);
@@ -90,18 +90,17 @@ public class EvaluationTest {
 	}
 
 	@Test
-	public void test9() {
+	public void evaluationWithNullProduct() {
 		User user = new User(1,"MARIA","RJ",null);
 		EvaluationGroup group = database.getEvaluationGroup("SPF B");
-		Product product = new Product(5,user, "PRODUTO0",null,group);
 		
 		evaluation = new Evaluation(group,null,user);
 		evaluation.setScore(0);
 		
 	}
 	
-	@Test
-	public void test10() {
+	@Test (expected = IllegalArgumentException.class)
+	public void evaluationWithAllNull() {
 		
 		evaluation = new Evaluation(null,null,null);
 		evaluation.setScore(0);

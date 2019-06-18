@@ -33,7 +33,7 @@ public class User{
 	
 	public User() {}
 	
-	public User(int it) {
+	public User(int id) {
 		setID(id);
 		setName(null);
 		setStateOfResidence(null);
@@ -109,7 +109,9 @@ public class User{
 	
 	}
 	
-	
+	/**
+	 * Retorna a quantidade de avaliações associadas com o grupo
+	 * */
 	
 	public int getEvaluationCount(EvaluationGroup group) {
 		

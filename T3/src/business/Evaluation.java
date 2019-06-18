@@ -30,16 +30,29 @@ public class Evaluation {
 	}
 	
 	
-	public Evaluation(EvaluationGroup group, Product product, User evaluator) {
+	public Evaluation(EvaluationGroup group, Product product, User evaluator) throws IllegalArgumentException{
 		setGroup(group);
 		setProduct(product);
 		setEvaluator(evaluator);
 		score = null;
 		
 		
-		if(product != null) product.addEvaluation(this);
+		if(group == null && product == null && evaluator == null) {
+			throw new IllegalArgumentException("Avaliação inicializada com parâmetros nulos\nAvaliações precisam estar associadas com pelo menos um parâmetro");
+			
+		}
+		
+		
+		if(product != null) {
+			product.addEvaluation(this);
+			if(group != null) group.addEvaluation(product, this);
+			
+		
+		}
 	
 		if(evaluator != null) evaluator.addEvaluation(this);
+		
+		
 	}
 	
 	public Evaluation(EvaluationGroup group, Product product, User evaluator,Integer NewScore) throws IllegalArgumentException{
@@ -48,11 +61,19 @@ public class Evaluation {
 		setEvaluator(evaluator);
 		setScore(NewScore);
 		
+		if(group == null && product == null && evaluator == null) {
+			throw new IllegalArgumentException("Avaliação inicializada com parâmetros nulos\nAvaliações precisam estar associadas com pelo menos um parâmetro");
+			
+		}
+		
 		if(product != null) product.addEvaluation(this);
 		
 		if(evaluator != null) evaluator.addEvaluation(this);
 		
 		if(group != null) group.addEvaluation(product, this);
+		
+		
+		
 		
 	}
 	
