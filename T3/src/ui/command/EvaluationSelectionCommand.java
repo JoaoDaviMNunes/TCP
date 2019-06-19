@@ -44,10 +44,10 @@ public class EvaluationSelectionCommand extends Command{
 			
 			
 			System.out.println("\nProdutos Aceitáveis ");
-			System.out.println(IOUtils.printDetailedProductList(AcceptableProductList));
+			System.out.println(IOUtils.generateDetailedProductList(AcceptableProductList));
 			
 			System.out.println("\nProdutos Nâo Aceitáveis ");
-			System.out.println(IOUtils.printDetailedProductList(NotAcceptableProductList));
+			System.out.println(IOUtils.generateDetailedProductList(NotAcceptableProductList));
 			
 		}
 		

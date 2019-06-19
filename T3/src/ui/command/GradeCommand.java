@@ -18,7 +18,7 @@ public class GradeCommand extends Command {
 		
 		
 		List<Product> AllProducts = super.database.getAllProducts();
-		String ProductListFormatted = IOUtils.printSimpleProductList(AllProducts);
+		String ProductListFormatted = IOUtils.generateSimpleProductList(AllProducts);
 		System.out.println(ProductListFormatted);
 		
 		
@@ -26,7 +26,7 @@ public class GradeCommand extends Command {
 		Product SelectedProduct = AllProducts.get(SelectedProductIndex);
 		
 		List<User> SelectedProductEvaluators = SelectedProduct.getEvaluators();
-		String EvaluatorListFormatted = IOUtils.printEvaluatorList(SelectedProductEvaluators);
+		String EvaluatorListFormatted = IOUtils.generateEvaluatorList(SelectedProductEvaluators);
 		System.out.println(EvaluatorListFormatted);
 		
 		int SelectedEvaluatorIndex = IOUtils.readInteger("Selecione o avaliador", 0, SelectedProductEvaluators.size()-1, EvaluatorListFormatted);

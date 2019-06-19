@@ -16,25 +16,18 @@ public class Database {
 	private List<Evaluation> evaluations = new ArrayList<>();
 	
 	
-	//constantes,dados inicias do database
-	final int NumTotalMembers = 10;
-	final int NumTotalProducts = 11;
-	final int NumTotalEvaluations = 12;
+
+	
 	
 	
 	
 	private final Map<String,ProductCategory> ProductCategoriesNameMap = new HashMap<>();
 	protected final Map<Integer,List<ProductCategory>> CategoriesIDMap = this.populateCategoriesMap();
 	
-	final List<Integer> IdsGroupA = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7));
-	final List<Integer> IdsGroupB = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7));
-	final List<Integer> IdsGroupC = new ArrayList<>(Arrays.asList(4, 5, 6, 7, 8, 9, 10));
 	
 	
 	
-	final String NameGroupA = "SPF A";
-	final String NameGroupB = "SPF B";
-	final String NameGroupC = "SPF C";
+
 	
 	
 	

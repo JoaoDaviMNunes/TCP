@@ -104,17 +104,17 @@ public class IOUtils {
 	}
 	
 	
-	public static String printSimpleProductList(List<Product> SimpleProductList) {
+	public static String generateSimpleProductList(List<Product> SimpleProductList) {
 		
-		return printProductList(SimpleProductList,simple);
+		return generateProductList(SimpleProductList,simple);
 	}
 	
-	public static String printDetailedProductList(List<Product> DetailedProductList) {
-		return printProductList(DetailedProductList, detailed);
+	public static String generateDetailedProductList(List<Product> DetailedProductList) {
+		return generateProductList(DetailedProductList, detailed);
 		
 	}
 	
-	private static String printProductList(List<Product> ProductList,boolean detailed) {
+	private static String generateProductList(List<Product> ProductList,boolean detailed) {
 		String buffer = "";
 		
 		int index = 0;
@@ -180,7 +180,7 @@ public class IOUtils {
 		
 	}
 	
-	public static String printEvaluatorList(List<User> Evaluators) {
+	public static String generateEvaluatorList(List<User> Evaluators) {
 		String buffer = "\n";
 		
 		int index = 0;
