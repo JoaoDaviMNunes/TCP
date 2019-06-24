@@ -1,5 +1,5 @@
-# TCP - T1
-**Trabalho1 na disciplina de Técnicas de Construção de Programas**
+# TCP
+**Trabalhos na disciplina de Técnicas de Construção de Programas**
 
 Alunos:
 * Arthur Kassick Ferreira
